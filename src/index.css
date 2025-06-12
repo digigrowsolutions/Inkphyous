@@ -1,0 +1,15 @@
+
+
+/* Import local Plus Jakarta Sans font */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/src/assets/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+ }
+*
+{
+  font-family: 'Plus Jakarta Sans';
+}
+
+
+@import "tailwindcss";
