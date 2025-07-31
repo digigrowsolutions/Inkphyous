@@ -1,7 +1,9 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
-import shoeImage from "../assets/clothing1.png";
+import products from "../Utils/Products"; // Import products from products.js
 
 function VariantCarousel({ variants }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -93,6 +95,7 @@ export default function ProductDisplay() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(null); // State for selected size
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,114 +109,24 @@ export default function ProductDisplay() {
     };
   }, []);
 
-  const allProducts = [
-    {
-      id: 1,
-      name: "Palm Angels Sneaker",
-      brand: "Sense",
-      price: "$395",
-      description: "A bold sneaker with a unique design, perfect for making a statement.",
-      detailedDescription:
-        "Low top suede and leather sneakers in white. Graphic printed in green and red throughout. Lace-up closure in white. Padded tongue and collar. Rubberized trim in red at welt.",
-      variants: [
-        {
-          id: "1a",
-          image: shoeImage,
-          color: "Green/White",
-        },
-        {
-          id: "1b",
-          image: shoeImage,
-          color: "Black/Red",
-        },
-        {
-          id: "1c",
-          image: shoeImage,
-          color: "Blue/Yellow",
-        },
-      ],
-      angles: [
-        { id: "1-angle1", image: shoeImage, angle: "Front" },
-        { id: "1-angle2", image: shoeImage, angle: "Side" },
-        { id: "1-angle3", image: shoeImage, angle: "Top" },
-      ],
-    },
-    {
-      id: 2,
-      name: "UrbanPulse Runner",
-      brand: "Sense",
-      price: "$250",
-      description: "Lightweight and comfortable, ideal for everyday wear.",
-      detailedDescription:
-        "Low top mesh and synthetic sneakers in black. Red accents throughout. Lace-up closure in black. Padded tongue and collar. Rubber sole in white.",
-      variants: [
-        {
-          id: "2a",
-          image: shoeImage,
-          color: "Black/Red",
-        },
-        {
-          id: "2b",
-          image: shoeImage,
-          color: "White/Grey",
-        },
-        {
-          id: "2c",
-          image: shoeImage,
-          color: "Blue/Black",
-        },
-      ],
-      angles: [
-        { id: "2-angle1", image: shoeImage, angle: "Front" },
-        { id: "2-angle2", image: shoeImage, angle: "Side" },
-        { id: "2-angle3", image: shoeImage, angle: "Top" },
-      ],
-    },
-    {
-      id: 3,
-      name: "ThunderStride",
-      brand: "Sense",
-      price: "$320",
-      description: "Durable and stylish, built for long-lasting performance.",
-      detailedDescription:
-        "Low top leather sneakers in white. Blue accents throughout. Lace-up closure in white. Padded tongue and collar. Rubber sole in blue.",
-      variants: [
-        {
-          id: "3a",
-          image: shoeImage,
-          color: "White/Blue",
-        },
-        {
-          id: "3b",
-          image: shoeImage,
-          color: "Black/Green",
-        },
-        {
-          id: "3c",
-          image: shoeImage,
-          color: "Red/White",
-        },
-      ],
-      angles: [
-        { id: "3-angle1", image: shoeImage, angle: "Front" },
-        { id: "3-angle2", image: shoeImage, angle: "Side" },
-        { id: "3-angle3", image: shoeImage, angle: "Top" },
-      ],
-    },
-  ];
-
-  const product = allProducts.find((p) => p.id === parseInt(id));
+  // Find product by ID from products.js
+  const product = products.find((p) => p.id === parseInt(id));
 
   if (!product) {
     return <div className="text-center py-16">Product not found</div>;
   }
 
+  // Create angles array dynamically based on product image
+  const angles = [
+    { id: `${product.id}-angle1`, image: product.image, angle: "Front" },
+    { id: `${product.id}-angle2`, image: product.image, angle: "Side" },
+    { id: `${product.id}-angle3`, image: product.image, angle: "Top" },
+  ];
+
   const blurValue = Math.min(scrollY / 100, 5); // Blur increases as you scroll, max 5px
 
   return (
     <section className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
-     
-
       {/* Hero Section (Carousel with Variants) */}
       <div
         className="w-full max-w-4xl sm:max-w-5xl md:max-w-6xl lg:max-w-7xl mt-20 fixed top-0 z-10"
@@ -227,7 +140,7 @@ export default function ProductDisplay() {
         <div className="flex flex-col md:flex-row items-start">
           {/* Left Side: Images from Different Angles */}
           <div className="w-full md:w-1/2 flex flex-col items-center space-y-8">
-            {product.angles.map((angle) => (
+            {angles.map((angle) => (
               <div key={angle.id} className="w-3/4">
                 <img
                   src={angle.image}
@@ -243,20 +156,37 @@ export default function ProductDisplay() {
             <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wider text-gray-800">
               {product.name}
             </h2>
-            <p className="text-2xl font-bold text-gray-700 mt-4">{product.price}</p>
+            <p className="text-2xl font-bold text-gray-700 mt-4">
+              ₹{product.discountPriceINR}
+              {product.priceINR !== product.discountPriceINR && (
+                <span className="text-sm text-gray-500 line-through ml-2">
+                  ₹{product.priceINR}
+                </span>
+              )}
+            </p>
             <div className="flex space-x-2 mt-4">
               {product.variants.map((variant) => (
                 <div
                   key={variant.id}
                   className="w-6 h-6 rounded-full border-2 border-gray-300"
-                  style={{ backgroundColor: variant.color.split("/")[0].toLowerCase() }}
+                  style={{ backgroundColor: variant.color.toLowerCase() }}
                 ></div>
               ))}
             </div>
-            <div className="flex space-x-2 mt-4">
-              <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm">
-                38EU - 5UK
-              </button>
+            <div className="flex space-x-2 mt-4 flex-wrap gap-2">
+              {product.sizeOptions.map((size) => (
+                <button
+                  key={size}
+                  className={`px-4 py-2 rounded-full text-sm uppercase ${
+                    selectedSize === size
+                      ? "bg-gray-800 text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                  onClick={() => setSelectedSize(size)}
+                >
+                  {size}
+                </button>
+              ))}
               <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm">
                 Size Guide
               </button>
@@ -265,8 +195,14 @@ export default function ProductDisplay() {
               className="mt-6 bg-gray-800 text-white px-6 py-3 rounded-full text-sm uppercase tracking-wider hover:bg-gray-700 transition-colors w-full"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              disabled={!selectedSize}
+              onClick={() => {
+                if (selectedSize) {
+                  alert(`Added ${product.name} (Size: ${selectedSize}) to cart!`);
+                }
+              }}
             >
-              Add to Cart
+              {selectedSize ? "Add to Cart" : "Select a Size"}
             </motion.button>
             <div className="mt-6">
               <details className="group">
@@ -284,7 +220,22 @@ export default function ProductDisplay() {
 
         {/* Detailed Description */}
         <div className="mt-12 w-full md:w-1/2">
-          <p className="text-gray-600 text-base">{product.detailedDescription}</p>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 uppercase">Product Details</h3>
+          <p className="text-gray-600 text-base">{product.description}</p>
+          <ul className="mt-4 space-y-2">
+            <li>
+              <strong>Fabric:</strong> {product.details.fabric}
+            </li>
+            <li>
+              <strong>Wash Care:</strong> {product.details.washCare}
+            </li>
+            <li>
+              <strong>Fit:</strong> {product.details.fit}
+            </li>
+            <li>
+              <strong>Features:</strong> {product.details.features}
+            </li>
+          </ul>
         </div>
       </div>
     </section>
