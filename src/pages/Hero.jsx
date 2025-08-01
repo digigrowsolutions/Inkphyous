@@ -337,7 +337,7 @@ export default function Home() {
       <div className="flex-1 flex justify-center mt-24">
         <motion.div
           className={`w-full max-w-4xl sm:max-w-5xl md:max-w-6xl lg:max-w-7xl ${
-            selectedCategory === "all" ? "overflow-y-auto h-[90vh] hide-scrollbar" : ""
+            selectedCategory === "all" ? "overflow-y-auto h-full hide-scrollbar" : ""
           }`}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
