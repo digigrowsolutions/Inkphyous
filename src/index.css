@@ -1,33 +1,25 @@
+
+
 /* Import local Plus Jakarta Sans font */
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/src/assets/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
   font-style: normal;
-}
-
-/* Base styles */
-* {
+ }
+ body{
+   zoom: 80%;
+ }
+*
+{
   font-family: 'Plus Jakarta Sans';
-  font-weight: bold;
+  font-weight: bold
 }
-
-p {
+p
+{
   font-family: 'Plus Jakarta Sans';
-  font-weight: lighter;
+  font-weight: lighter
 }
-
-/* Set global zoom to 80% */
-body {
-  zoom: 0.8; /* For older browsers like IE */
-  -moz-transform: scale(0.8); /* For Firefox */
-  -moz-transform-origin: 0 0;
-  -o-transform: scale(0.8); /* For Opera */
-  -o-transform-origin: 0 0;
-  -webkit-transform: scale(0.8); /* For Chrome, Safari */
-  -webkit-transform-origin: 0 0;
-  transform: scale(0.8); /* Standard property */
-  transform-origin: 0 0;
-}
+/* Other global styles... */
 
 /*
   Add this block of CSS to hide the scrollbar.
