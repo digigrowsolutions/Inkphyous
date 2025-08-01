@@ -16,6 +16,23 @@ p
   font-family: 'Plus Jakarta Sans';
   font-weight: lighter
 }
+/* Other global styles... */
 
+/*
+  Add this block of CSS to hide the scrollbar.
+  -webkit-scrollbar is for Chrome, Safari, and Opera.
+  -ms-overflow-style is for Internet Explorer and Edge.
+  scrollbar-width is for Firefox.
+*/
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Other global styles... */
 
 @import "tailwindcss";
