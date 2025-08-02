@@ -33,28 +33,42 @@ export default function Checkout() {
 
   // Sample promo codes
   const validPromoCodes = {
-    "SAVE10": 0.1, // 10% discount
-    "SAVE20": 0.2, // 20% discount
-    "FREESHIP": 0.15, // 15% discount
+    SAVE10: 0.1, // 10% discount
+    SAVE20: 0.2, // 20% discount
+    FREESHIP: 0.15, // 15% discount
   };
 
   useEffect(() => {
     const productId = searchParams.get("productId");
+    const variantId = searchParams.get("variantId");
     const size = searchParams.get("size");
 
-    if (productId && size) {
+    if (productId && variantId && size) {
       const product = products.find((p) => p.id === parseInt(productId));
       if (product) {
-        setCart([{ 
-          id: product.id, 
-          name: product.name, 
-          size, 
-          price: product.discountPriceINR, 
-          quantity: 1 
-        }]);
+        const variant = product.variants.find((v) => v.id === variantId);
+        if (variant && variant.inStock) {
+          setCart([
+            {
+              id: product.id,
+              variantId: variant.id,
+              name: `${product.name} (${variant.color})`,
+              size: variant.size,
+              price: variant.priceINR,
+              quantity: 1,
+              image: variant.image,
+            },
+          ]);
+        } else {
+          alert("Selected variant is out of stock or not found.");
+          navigate(`/product/${product.id}`);
+        }
+      } else {
+        alert("Product not found.");
+        navigate("/");
       }
     }
-  }, [searchParams]);
+  }, [searchParams, navigate]);
 
   const handleInputChange = (e, section = "user") => {
     const { name, value } = e.target;
@@ -82,11 +96,21 @@ export default function Checkout() {
       setPromoDiscount(discount);
     } else {
       setPromoDiscount(0);
+      alert("Invalid promo code.");
     }
   };
 
   const handlePayment = () => {
-    if (!userDetails.name || !cardDetails.name || !cardDetails.number || !cardDetails.expiry || !cardDetails.cvc) {
+    if (
+      !userDetails.name ||
+      !userDetails.address.street ||
+      !userDetails.address.city ||
+      !userDetails.address.state ||
+      !userDetails.address.postalCode ||
+      !userDetails.address.country ||
+      (paymentMethod === "card" &&
+        (!cardDetails.name || !cardDetails.number || !cardDetails.expiry || !cardDetails.cvc))
+    ) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -104,7 +128,7 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen py-18 px-4 sm:px-6 lg:px-8">
-      <motion.div 
+      <motion.div
         className="max-w-7xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -113,15 +137,15 @@ export default function Checkout() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Scrollable Left Side */}
           <div className="lg:col-span-2 space-y-8 overflow-y-auto">
-            {/* Account Details */}
-            <motion.div 
+            {/* Customer Details */}
+            <motion.div
               className="rounded-lg p-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
             >
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Customer Details</h2>
-              <div className="space-y-4 flex grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Full Name *</label>
                   <input
@@ -160,7 +184,7 @@ export default function Checkout() {
             </motion.div>
 
             {/* Delivery Address */}
-            <motion.div 
+            <motion.div
               className="rounded-lg p-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -365,8 +389,8 @@ export default function Checkout() {
           </div>
 
           {/* Sticky Order Summary */}
-          <motion.div 
-            className="rounded-3xl p-4 border border-gray-400 h-fit lg:sticky lg:top-20"
+          <motion.div
+            className="rounded-3xl p-4 border border-gray-300 h-fit lg:sticky lg:top-20"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
@@ -375,14 +399,14 @@ export default function Checkout() {
             <AnimatePresence>
               {cart.map((item) => (
                 <motion.div
-                  key={item.id}
+                  key={`${item.variantId}-${item.size}`}
                   className="flex items-center mb-4 border-b pb-4"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                 >
                   <img
-                    src={products.find((p) => p.id === item.id)?.image}
+                    src={item.image}
                     alt={item.name}
                     className="w-20 h-20 object-contain mr-4 rounded"
                   />
@@ -427,12 +451,19 @@ export default function Checkout() {
               </p>
               <p className="flex justify-between">
                 <span>Discount (10%):</span>
-                <span>-₹{cart.reduce((sum, item) => sum + item.price * item.quantity * 0.1, 0).toFixed(2)}</span>
+                <span>
+                  -₹{cart.reduce((sum, item) => sum + item.price * item.quantity * 0.1, 0).toFixed(2)}
+                </span>
               </p>
               {promoDiscount > 0 && (
                 <p className="flex justify-between">
                   <span>Promo Discount ({promoCode}):</span>
-                  <span>-₹{cart.reduce((sum, item) => sum + item.price * item.quantity * promoDiscount, 0).toFixed(2)}</span>
+                  <span>
+                    -₹
+                    {cart
+                      .reduce((sum, item) => sum + item.price * item.quantity * promoDiscount, 0)
+                      .toFixed(2)}
+                  </span>
                 </p>
               )}
               <p className="flex justify-between">
@@ -458,7 +489,8 @@ export default function Checkout() {
                 whileTap={{ scale: 0.95 }}
                 onClick={handlePayment}
               >
-                Verify & Pay             </motion.button>
+                Verify & Pay
+              </motion.button>
             </div>
           </motion.div>
         </div>

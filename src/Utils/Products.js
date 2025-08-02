@@ -2,7 +2,9 @@ import Product1v1 from '../assets/JR1.png';
 import Product2v1 from '../assets/JE1.png';
 import Product3v1 from '../assets/JB1.png';
 import Product4v1 from '../assets/JH1.png';
+import Product4v2 from '../assets/JH2.png';
 import Product5v1 from '../assets/RT1.png';
+import Product5v2 from '../assets/RT2.png';
 
 const products = [
   {
@@ -35,7 +37,7 @@ const products = [
         size: "M",
         priceINR: 1999,
         inStock: true,
-        image: Product1v1, // Using main product image
+        image: Product1v1,
       },
       {
         id: "JSY-2025-RPT-PNK-L",
@@ -43,7 +45,7 @@ const products = [
         size: "L",
         priceINR: 1999,
         inStock: true,
-        image: Product1v1, // Using main product image
+        image: Product1v1,
       },
       {
         id: "JSY-2025-RPT-GRY-XL",
@@ -51,7 +53,7 @@ const products = [
         size: "XL",
         priceINR: 1999,
         inStock: true,
-        image: Product1v1, // Using main product image
+        image: Product1v1,
       },
     ],
     rating: 4.5,
@@ -88,7 +90,7 @@ const products = [
         size: "M",
         priceINR: 1899,
         inStock: true,
-        image: Product2v1, // Using main product image
+        image: Product2v1,
       },
       {
         id: "JSY-2025-ELE-WHT-L",
@@ -96,7 +98,7 @@ const products = [
         size: "L",
         priceINR: 1899,
         inStock: true,
-        image: Product2v1, // Using main product image
+        image: Product2v1,
       },
       {
         id: "JSY-2025-ELE-BLU-XL",
@@ -104,7 +106,7 @@ const products = [
         size: "XL",
         priceINR: 1899,
         inStock: false,
-        image: Product2v1, // Using main product image
+        image: Product2v1,
       },
     ],
     rating: 4.4,
@@ -141,7 +143,7 @@ const products = [
         size: "M",
         priceINR: 1799,
         inStock: true,
-        image: Product3v1, // Using main product image
+        image: Product3v1,
       },
       {
         id: "JSY-2025-BOX-BLK-L",
@@ -149,7 +151,7 @@ const products = [
         size: "L",
         priceINR: 1799,
         inStock: true,
-        image: Product3v1, // Using main product image
+        image: Product3v1,
       },
     ],
     rating: 4.6,
@@ -186,7 +188,7 @@ const products = [
         size: "M",
         priceINR: 1499,
         inStock: true,
-        image: Product4v1, // Using main product image
+        image: Product4v1,
       },
       {
         id: "JRT-2025-DIA-BLK-L",
@@ -194,7 +196,7 @@ const products = [
         size: "L",
         priceINR: 1499,
         inStock: true,
-        image: Product4v1, // Using main product image
+        image: Product4v2,
       },
     ],
     rating: 4.3,
@@ -227,19 +229,19 @@ const products = [
     variants: [
       {
         id: "TRK-2025-RLX-WHT-M",
-        color: "White",
+        color: "Black",
         size: "M",
         priceINR: 1799,
         inStock: true,
-        image: Product5v1, // Using main product image
+        image: Product5v1,
       },
       {
         id: "TRK-2025-RLX-BLK-L",
-        color: "Black",
+        color: "White",
         size: "L",
         priceINR: 1799,
         inStock: true,
-        image: Product5v1, // Using main product image
+        image: Product5v2,
       },
     ],
     rating: 4.5,

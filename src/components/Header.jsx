@@ -134,7 +134,7 @@ export default function Header({ openShopAll }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-12 right-0 w-80 bg-white border border-gray-500 rounded-lg shadow-lg p-4 text-gray-800"
+                  className="absolute top-12 right-0 w-80 bg-white border border-gray-300 rounded-lg shadow-lg p-4 text-gray-800"
                 >
                 
                   
@@ -154,11 +154,8 @@ export default function Header({ openShopAll }) {
                           </li>
                         ))}
                       </ul>
-                      <div className="mt-4 pt-4 border-t border-gray-200">
-                        <div className="flex justify-end items-center font-bold text-lg">
-                        
-                          <span>₹{cartTotal}</span>
-                        </div>
+                      <div className=" border-t border-gray-200">
+                       
                         <Link to="/checkout" onClick={closeCartDropdown}>
                           <motion.button
                             className="mt-4 w-full bg-gray-800  text-white py-2 rounded-md uppercase tracking-wider font-semibold hover:bg-gray-700 transition-colors"

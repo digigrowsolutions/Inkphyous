@@ -57,18 +57,8 @@ function VariantCarousel({ variants, activeIndex, setActiveIndex }) {
     return { display: "none" };
   };
 
-  const handlePrev = (e) => {
-    e.stopPropagation();
-    setActiveIndex((prev) => (prev - 1 + variants.length) % variants.length);
-  };
-
-  const handleNext = (e) => {
-    e.stopPropagation();
-    setActiveIndex((prev) => (prev + 1) % variants.length);
-  };
-
   return (
-    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[620px] overflow-hidden">
       {variants.map((variant, index) => (
         <motion.div
           key={variant.id}
@@ -77,11 +67,11 @@ function VariantCarousel({ variants, activeIndex, setActiveIndex }) {
           initial={false}
           onClick={() => navigate(`/product/${variant.id}`)}
         >
-          <div className="w-full h-full relative">
+          <div className="w-full h-full flex justify-center items-center relative">
             <img
               src={variant.image}
               alt={`${variant.name} ${variant.color}`}
-              className="w-full h-full object-contain"
+              className="w-full h-[400px] object-contain"
             />
           </div>
         </motion.div>
@@ -106,15 +96,34 @@ export default function ProductDisplay() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const product = products.find((p) => p.id === parseInt(id));
-  if (!product) {
+  // Find the product and variant based on the ID
+  let product = null;
+  let selectedVariant = null;
+  let variantIndex = 0;
+
+  for (const p of products) {
+    if (p.id === parseInt(id)) {
+      product = p;
+      selectedVariant = p.variants[0]; // Default to first variant if product ID is used
+      break;
+    }
+    const variant = p.variants.find((v) => v.id === id);
+    if (variant) {
+      product = p;
+      selectedVariant = variant;
+      variantIndex = p.variants.findIndex((v) => v.id === id);
+      break;
+    }
+  }
+
+  if (!product || !selectedVariant) {
     return <div className="text-center py-16 text-gray-800 text-xl">Product not found</div>;
   }
 
   const productImages = [
-    { id: `${product.id}-front`, url: product.image, angle: "Front" },
-    { id: `${product.id}-back`, url: product.image, angle: "Back" },
-    { id: `${product.id}-side`, url: product.image, angle: "Side" },
+    { id: `${product.id}-front`, url: selectedVariant.image, angle: "Front" },
+    { id: `${product.id}-back`, url: selectedVariant.image, angle: "Back" },
+    { id: `${product.id}-side`, url: selectedVariant.image, angle: "Side" },
   ];
 
   const blurValue = Math.min(scrollY / 100, 5);
@@ -139,7 +148,7 @@ export default function ProductDisplay() {
               {productImages.map((image, index) => (
                 <motion.div
                   key={image.id}
-                  className="w-3/4 rounded-3xl border border-gray-500 bg-white p-2 shadow-md"
+                  className="w-3/4 rounded-3xl border border-gray-300 bg-white p-2 shadow-md"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -156,7 +165,7 @@ export default function ProductDisplay() {
           </div>
 
           <motion.div
-            className="w-full border border-gray-500 md:w-1/2 bg-white md:pl-8 sticky top-[100px] self-start rounded-3xl shadow-md p-6 sm:p-8"
+            className="w-full border border-gray-300 md:w-1/2 bg-white md:pl-8 sticky top-[100px] self-start rounded-3xl shadow-md p-6 sm:p-8"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
@@ -164,11 +173,11 @@ export default function ProductDisplay() {
           >
             <div className="flex justify-between items-center">
               <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-wider text-gray-800">
-                {product.name}
+                {product.name} ({selectedVariant.color})
               </h2>
               <p className="text-2xl font-bold text-gray-700">
-                ₹{product.discountPriceINR}
-                {product.priceINR !== product.discountPriceINR && (
+                ₹{selectedVariant.priceINR}
+                {product.priceINR !== selectedVariant.priceINR && (
                   <span className="text-sm text-gray-500 line-through ml-2">
                     ₹{product.priceINR}
                   </span>
@@ -203,7 +212,7 @@ export default function ProductDisplay() {
               disabled={!selectedSize}
               onClick={() => {
                 if (selectedSize) {
-                  navigate(`/checkout?productId=${product.id}&size=${selectedSize}`);
+                  navigate(`/checkout?productId=${product.id}&variantId=${selectedVariant.id}&size=${selectedSize}`);
                 }
               }}
             >
@@ -235,6 +244,14 @@ export default function ProductDisplay() {
                 <li className="flex flex-col">
                   <strong className="w-24 font-semibold text-gray-800">Features:</strong>
                   <span className="mt-1">{product.details.features}</span>
+                </li>
+                <li className="flex flex-col">
+                  <strong className="w-24 font-semibold text-gray-800">Color:</strong>
+                  <span className="mt-1">{selectedVariant.color}</span>
+                </li>
+                <li className="flex flex-col">
+                  <strong className="w-24 font-semibold text-gray-800">Size:</strong>
+                  <span className="mt-1">{selectedVariant.size}</span>
                 </li>
               </ul>
             </motion.div>
