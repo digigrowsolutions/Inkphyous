@@ -92,7 +92,7 @@ export default function ProductDisplay() {
   const productImages = product.variants.map((v, i) => ({ id: v.id, url: v.image, angle: v.color }));
 
   return (
-<section className="min-h-screen bg-[#FFFAF5] flex flex-col items-center justify-start">
+<section className="min-h-screen bg-white  flex flex-col items-center justify-start">
       {/* Hero Carousel */}
       <div className="w-full fixed top-0 z-10" style={{ filter: `blur(${Math.min(scrollY / 100, 10)}px)`, transition: "filter 0.3s ease" }}>
         <HeroCarousel variants={product.variants} activeIndex={activeVariantIndex} setActiveIndex={setActiveVariantIndex} />
@@ -141,19 +141,19 @@ export default function ProductDisplay() {
             <div className="flex justify-end mt-2">
               <div className="w-40">
                 <label className="block text-xl text-black mb-1 font-medium text-right">Select Size</label>
-                <select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                  className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800
-    ${selectedSize ? "bg-red-600 text-white hover:bg-red-500" : "bg-white text-black border-gray-300 hover:bg-red-500 hover:text-white"}`}
-                >
-                  <option value="">Select size</option>
-                  {product.sizeOptions.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
+               <select
+  value={selectedSize}
+  onChange={(e) => setSelectedSize(e.target.value)}
+  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+>
+  <option value="">Select size</option>
+  {product.sizeOptions.map((size) => (
+    <option key={size} value={size}>
+      {size}
+    </option>
+  ))}
+</select>
+
 
               </div>
             </div>

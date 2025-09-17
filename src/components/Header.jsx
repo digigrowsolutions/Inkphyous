@@ -155,10 +155,12 @@ export default function Header({ openShopAll }) {
             </motion.button>
           </div>
 
-          {/* Center: Brand Name */}
-          <div className="main text-2xl md:text-4xl font-bold font-sans uppercase absolute left-1/2 -translate-x-1/2">
-            Inkphyous
-          </div>
+       {/* Center: Brand Name */}
+<div className="main text-2xl md:text-4xl font-bold font-sans uppercase absolute left-1/2 -translate-x-1/2">
+  <a href="/" className="hover:text-red-600 transition-colors duration-300">
+    Inkphyous
+  </a>
+</div>
 
           {/* Right Side */}
           <div className="flex items-center space-x-6 relative">
