@@ -3,7 +3,7 @@
 /* Import local Plus Jakarta Sans font */
 @font-face {
   font-family: 'Plus Jakarta Sans';
-  src: url('/src/assets/FuturaCyrillicMedium.ttf') format('truetype');
+  src: url('/src/assets/FuturaCyrillicLight.ttf') format('truetype');
   font-style: normal;
  }
  @font-face {

@@ -35,23 +35,24 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
   };
 
   return (
-    <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
-      {variants.map((variant, index) => (
-        <motion.div
-          key={variant.id}
-          className="absolute top-1/2 -translate-y-1/2 w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] cursor-pointer"
-          animate={getVariantStyle(index)}
-          initial={false}
-          onClick={() => navigate(`/product/${variant.id}`)}
-        >
-          <img
-            src={variant.image}
-            alt={variant.name}
-            className="w-full h-full object-contain rounded-xl"
-          />
-        </motion.div>
-      ))}
-    </div>
+   <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex justify-center items-center overflow-hidden">
+  {variants.map((variant, index) => (
+    <motion.div
+      key={variant.id}
+      className="cursor-pointer pt-18 flex justify-center items-center"
+      animate={getVariantStyle(index)}
+      initial={false}
+      onClick={() => navigate(`/product/${variant.id}`)}
+    >
+      <img
+        src={variant.image}
+        alt={variant.name}
+        className="max-h-full max-w-full object-contain"
+      />
+    </motion.div>
+  ))}
+</div>
+
   );
 }
 
