@@ -157,7 +157,7 @@ export default function Header({ openShopAll }) {
 
        {/* Center: Brand Name */}
 <div className="main text-2xl md:text-4xl font-bold font-sans uppercase absolute left-1/2 -translate-x-1/2">
-  <a href="/" className="hover:text-red-600 transition-colors duration-300">
+  <a href="/" className="hover:text-red-600 main transition-colors duration-300">
     Inkphyous
   </a>
 </div>
