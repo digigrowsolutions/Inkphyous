@@ -35,23 +35,23 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
   };
 
   return (
-   <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex justify-center items-center overflow-hidden">
-  {variants.map((variant, index) => (
-    <motion.div
-      key={variant.id}
-      className="cursor-pointer pt-18 flex justify-center items-center"
-      animate={getVariantStyle(index)}
-      initial={false}
-      onClick={() => navigate(`/product/${variant.id}`)}
-    >
-      <img
-        src={variant.image}
-        alt={variant.name}
-        className="max-h-full max-w-full object-contain"
-      />
-    </motion.div>
-  ))}
-</div>
+    <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex justify-center items-center overflow-hidden">
+      {variants.map((variant, index) => (
+        <motion.div
+          key={variant.id}
+          className="cursor-pointer pt-18 flex justify-center items-center"
+          animate={getVariantStyle(index)}
+          initial={false}
+          onClick={() => navigate(`/product/${variant.id}`)}
+        >
+          <img
+            src={variant.image}
+            alt={variant.name}
+            className="max-h-full max-w-full object-contain"
+          />
+        </motion.div>
+      ))}
+    </div>
 
   );
 }
@@ -92,7 +92,7 @@ export default function ProductDisplay() {
   const productImages = product.variants.map((v, i) => ({ id: v.id, url: v.image, angle: v.color }));
 
   return (
-    <section className="min-h-screen bg-white flex flex-col items-center justify-start">
+<section className="min-h-screen bg-[#FFFAF5] flex flex-col items-center justify-start">
       {/* Hero Carousel */}
       <div className="w-full fixed top-0 z-10" style={{ filter: `blur(${Math.min(scrollY / 100, 10)}px)`, transition: "filter 0.3s ease" }}>
         <HeroCarousel variants={product.variants} activeIndex={activeVariantIndex} setActiveIndex={setActiveVariantIndex} />
@@ -116,7 +116,7 @@ export default function ProductDisplay() {
               {productImages.map((image, index) => (
                 <motion.div
                   key={image.id}
-                  className="w-full rounded-3xl border border-gray-300 bg-white p-2 shadow-md"
+                  className="w-full  bg-white p-2 "
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -125,7 +125,7 @@ export default function ProductDisplay() {
                   <img
                     src={image.url}
                     alt={`${product.name} ${image.angle}`}
-                    className="w-full h-auto object-contain rounded-3xl"
+                    className="w-full h-auto object-contain "
                   />
                 </motion.div>
               ))}
@@ -144,13 +144,17 @@ export default function ProductDisplay() {
                 <select
                   value={selectedSize}
                   onChange={(e) => setSelectedSize(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                  className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800
+    ${selectedSize ? "bg-red-600 text-white hover:bg-red-500" : "bg-white text-black border-gray-300 hover:bg-red-500 hover:text-white"}`}
                 >
                   <option value="">Select size</option>
                   {product.sizeOptions.map((size) => (
-                    <option key={size} value={size}>{size}</option>
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
                   ))}
                 </select>
+
               </div>
             </div>
 
@@ -186,7 +190,7 @@ export default function ProductDisplay() {
               <details className="group py-3">
                 <summary className="flex text-2xl justify-between items-center cursor-pointer font-medium text-gray-800 hover:text-gray-900">
                   Details
-                  <span className="transition-transform group-open:rotate-180">   <ChevronDown className="h-6 w-6"/>
+                  <span className="transition-transform group-open:rotate-180">   <ChevronDown className="h-6 w-6" />
                   </span>
                 </summary>
                 <ul className="mt-2 text-xl text-gray-600 space-y-1 list-disc ml-5">
@@ -201,7 +205,7 @@ export default function ProductDisplay() {
               <details className="group py-3">
                 <summary className="flex text-2xl justify-between items-center cursor-pointer font-medium text-gray-800 hover:text-gray-900">
                   Free Delivery & Returns
-                  <span className="transition-transform group-open:rotate-180">    <ChevronDown className="h-6 w-6"/>
+                  <span className="transition-transform group-open:rotate-180">    <ChevronDown className="h-6 w-6" />
                   </span>
                 </summary>
                 <p className="mt-2 text-xl text-gray-600">
@@ -213,7 +217,7 @@ export default function ProductDisplay() {
               <details className="group py-3">
                 <summary className="flex text-2xl justify-between items-center cursor-pointer font-medium text-gray-800 hover:text-gray-900">
                   Reviews ({product.reviews})
-                  <span className="transition-transform group-open:rotate-180">   <ChevronDown className="h-6 w-6"/>
+                  <span className="transition-transform group-open:rotate-180">   <ChevronDown className="h-6 w-6" />
                   </span>
                 </summary>
                 <p className="mt-2 text-xl text-gray-600">

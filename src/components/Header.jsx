@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CircleUser, X, Search, ChevronDown } from "lucide-react";
+import { CircleUserRound, X, Search, ChevronDown } from "lucide-react";
 import { HeartIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
@@ -118,7 +118,7 @@ export default function Header({ openShopAll }) {
             animate="visible"
             exit="exit"
           >
-            <TbPaperBag className="h-5 w-5" />
+            <TbPaperBag className="h-5 w-5" strokeWidth={1.5} />
             <span>
               Successfully added <b>{lastAddedItem.name}</b> to your cart!
             </span>
@@ -126,7 +126,7 @@ export default function Header({ openShopAll }) {
         )}
       </AnimatePresence>
 
-      <header className="bg-white text-black fixed top-0 left-0 w-full z-50 ">
+      <header className="bg-white text-black fixed top-0 left-0 w-full z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between relative">
           {/* Mobile Menu Button */}
           <div className="md:hidden">
@@ -137,9 +137,9 @@ export default function Header({ openShopAll }) {
               whileTap={{ scale: 0.9 }}
             >
               {isSidebarOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-6 w-6" strokeWidth={1.5} />
               ) : (
-                <Bars3Icon className="h-6 w-6" />
+                <Bars3Icon className="h-6 w-6" strokeWidth={1.5} />
               )}
             </motion.button>
           </div>
@@ -151,7 +151,7 @@ export default function Header({ openShopAll }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <CircleUser className="h-8 w-8" />
+              <CircleUserRound className="h-8 w-8" strokeWidth={1.5} />
             </motion.button>
           </div>
 
@@ -189,7 +189,7 @@ export default function Header({ openShopAll }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Search className="h-6 w-6" />
+              <Search className="h-6 w-6" strokeWidth={1.5} />
             </motion.button>
 
             {/* Cart Button */}
@@ -199,7 +199,7 @@ export default function Header({ openShopAll }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <TbPaperBag className="h-6 w-6" />
+              <TbPaperBag className="h-6 w-6" strokeWidth={1.5} />
               {cartItemCount > 0 && (
                 <span className="absolute -right-2 top-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                   {cartItemCount}
@@ -211,12 +211,12 @@ export default function Header({ openShopAll }) {
             <div className="relative" ref={langDropdownRef}>
               <motion.button
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center text-sm font-medium  hover:text-gray-600"
+                className="flex items-center text-sm font-medium hover:text-gray-600"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {selectedLang}{" "}
-                <ChevronDown className="h-4 w-4 ml-1 text-gray-600" />
+                <ChevronDown className="h-4 w-4 ml-1 text-gray-600" strokeWidth={1.5} />
               </motion.button>
 
               <AnimatePresence>
@@ -266,10 +266,7 @@ export default function Header({ openShopAll }) {
                     <>
                       <ul className="space-y-3 max-h-56 overflow-y-auto hide-scrollbar">
                         {cartItems.map((item) => (
-                          <li
-                            key={item.id}
-                            className="flex items-center space-x-3"
-                          >
+                          <li key={item.id} className="flex items-center space-x-3">
                             <img
                               src={item.image}
                               alt={item.name}
@@ -285,7 +282,7 @@ export default function Header({ openShopAll }) {
                               onClick={() => removeFromCart(item.id)}
                               className="text-gray-400 border rounded-md p-1 hover:text-red-500 transition-colors flex-shrink-0"
                             >
-                              <X className="h-4 w-4" />
+                              <X className="h-4 w-4" strokeWidth={1.5} />
                             </button>
                           </li>
                         ))}
@@ -329,7 +326,7 @@ export default function Header({ openShopAll }) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <X className="h-6 w-6 text-black" />
+                <X className="h-6 w-6 text-black" strokeWidth={1.5} />
               </motion.button>
               <Link
                 to="/"
@@ -353,7 +350,7 @@ export default function Header({ openShopAll }) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <HeartIcon className="h-6 w-6" />
+                <HeartIcon className="h-6 w-6" strokeWidth={1.5} />
                 <span>Favorites</span>
               </motion.button>
               <motion.button
@@ -362,7 +359,7 @@ export default function Header({ openShopAll }) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <TbPaperBag className="h-6 w-6" />
+                <TbPaperBag className="h-6 w-6" strokeWidth={1.5} />
                 <span>Cart</span>
                 {cartItemCount > 0 && (
                   <span className="ml-2 h-5 w-5 bg-red-500 text-white text-xs rounded-md flex items-center justify-center">
