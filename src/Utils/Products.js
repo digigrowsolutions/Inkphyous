@@ -160,7 +160,7 @@ const products = [
   },
   {
     id: 4,
-    name: "Diagonal Polyester Jhorts",
+    name: " Polyester Jhorts",
     brand: "Inkphyous",
     image: Product4v1,
     category: "Jhorts",

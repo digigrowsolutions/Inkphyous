@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import products from "../Utils/Products";
 import { Rewind } from 'lucide-react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { useCart } from "../components/CartContext"; // Import the custom hook
+import { useCart } from "../components/CartContext";
 
 // New component for the cart notification
 function CartNotification({ product, onClose }) {
@@ -38,7 +38,7 @@ function CartNotification({ product, onClose }) {
 
 // Product Listing Component
 function ProductListing({ products, navigate, onBackClick }) {
-  const { addToCart } = useCart(); // Use the hook here
+  const { addToCart } = useCart();
 
   return (
     <motion.div
@@ -57,12 +57,13 @@ function ProductListing({ products, navigate, onBackClick }) {
       </button>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
         {products.map((product) => (
+          // The parent div no longer has a click handler
           <motion.div
             key={product.id}
             className="cursor-pointer rounded-lg overflow-hidden transition-all duration-300 "
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate(`/product/${product.id}`)}
+            // onClick={() => navigate(`/product/${product.id}`)} // This is what you need to remove
           >
             <div className="w-full h-auto bg-gray-200">
               <img
@@ -87,13 +88,14 @@ function ProductListing({ products, navigate, onBackClick }) {
 }
 
 // Product Info Component
-function ProductInfo({ activeProduct }) { // Remove onAddToCart prop
+function ProductInfo({ activeProduct, onAddToCart }) {
   const navigate = useNavigate();
-  const { addToCart } = useCart(); // Use the hook here
+  const { addToCart } = useCart();
   if (!activeProduct) return null;
 
   return (
     <AnimatePresence mode="wait">
+      {/* Removed onClick={() => navigate(...)} from this div */}
       <motion.div
         key={activeProduct.id}
         initial={{ opacity: 0, y: 20 }}
@@ -101,41 +103,29 @@ function ProductInfo({ activeProduct }) { // Remove onAddToCart prop
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.5 }}
         className="text-center w-full max-w-xl mx-auto cursor-pointer backdrop-blur-sm rounded-2xl p-6"
-        onClick={() => navigate(`/product/${activeProduct.id}`)}
       >
         <div className="mb-4">
           <motion.h2
-            className="text-xl sm:text-2xl uppercase md:text-3xl font-bold tracking-wider text-gray-800"
+            className="main text-xl sm:text-2xl uppercase md:text-7xl font-bold tracking-wider text-gray-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
             {activeProduct.name}
           </motion.h2>
-          <motion.p className="mt-4 font-light">{activeProduct.description}</motion.p>
+          <motion.p className="mt=2 font-light text-xl ">{activeProduct.description}</motion.p>
         </div>
         <div className="flex justify-center gap-4 w-full">
           <motion.button
-            className="text-gray-800 border border-gray-800 px-6 py-3 rounded-md text-xs sm:text-sm uppercase tracking-wider hover:from-gray-700 hover:to-gray-800 transition-all duration-300"
+            className="mt-4 text-white bg-gray-600 px-6 py-3 rounded-full text-xs sm:text-lg uppercase tracking-wider hover:bg-red-500 shodow-lg transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
-              e.stopPropagation();
-              addToCart(activeProduct); // Call the context function
-            }}
-          >
-            ADD TO CART
-          </motion.button>
-          <motion.button
-            className="text-white bg-gray-800 border border-gray-800 px-6 py-3 rounded-md text-xs sm:text-sm uppercase tracking-wider hover:from-gray-700 hover:to-gray-800 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); // Stops the event from bubbling up to the parent div
               navigate(`/product/${activeProduct.id}`);
             }}
           >
-            BUY NOW
+            See More
           </motion.button>
         </div>
       </motion.div>
@@ -203,12 +193,14 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
   return (
     <div className="relative w-full h-[500px] overflow-hidden" data-scroll data-scroll-speed="2">
       {products.map((product, index) => (
+        // The onClick for navigation is moved to the "See More" button
         <motion.div
           key={product.id}
           className="absolute top-1/2 -translate-y-1/2 w-[400px] h-[400px] cursor-pointer"
           animate={getProductStyle(index)}
           initial={false}
-          onClick={() => navigate(`/product/${product.id}`)}
+          // The click handler is removed from the image container to prevent navigation on image click
+          // onClick={() => navigate(`/product/${product.id}`)}
         >
           <div className="w-full h-full relative">
             <img
@@ -233,7 +225,7 @@ export default function Home() {
   const containerRef = useRef(null);
   const locoScrollRef = useRef(null);
   const navigate = useNavigate();
-  const { addToCart } = useCart(); // Use the hook here
+  const { addToCart } = useCart();
 
   const categoryMap = products.reduce((acc, p) => {
     acc[p.category] = (acc[p.category] || 0) + 1;
@@ -297,42 +289,14 @@ export default function Home() {
     setSelectedCategoryIndex(0);
     setActiveProductIndex(0);
   };
-  
-  // This function is no longer needed since we are using the context
-  // const handleAddToCart = (product) => {
-  //   console.log(`Product "${product.name}" added to cart.`);
-  //   setNotification(product);
-  // };
 
   const handleAddToCartWithNotification = (product) => {
-    addToCart(product); // Call the context function
-    setNotification(product); // Set the notification to display
+    addToCart(product);
+    setNotification(product);
   };
 
   return (
     <section className="min-h-screen bg-white flex relative overflow-hidden">
-      {/* Category Panel */}
-      <div className="absolute top-[20%] left-20 z-10">
-        <div className="flex flex-col">
-          {navItems.map((item, index) => (
-            <button
-              key={item.category}
-              className={`text-left uppercase text-3xl py-4 transition-all duration-200 ${
-                selectedCategoryIndex === index
-                  ? "text-gray-900 scale-90"
-                  : "text-gray-400"
-              }`}
-              onClick={() => {
-                setSelectedCategoryIndex(index);
-                setActiveProductIndex(0);
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="flex-1 flex justify-center mt-24">
         <motion.div

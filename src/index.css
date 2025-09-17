@@ -3,7 +3,12 @@
 /* Import local Plus Jakarta Sans font */
 @font-face {
   font-family: 'Plus Jakarta Sans';
-  src: url('/src/assets/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
+  src: url('/src/assets/FuturaCyrillicMedium.ttf') format('truetype');
+  font-style: normal;
+ }
+ @font-face {
+  font-family: 'main';
+  src: url('/src/assets/BebasNeue-Regular.ttf') format('truetype');
   font-style: normal;
  }
  body{
@@ -13,6 +18,10 @@
 {
   font-family: 'Plus Jakarta Sans';
   font-weight: bold
+}
+.main
+{
+  font-family: 'main';
 }
 p
 {
