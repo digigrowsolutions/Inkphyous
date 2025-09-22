@@ -191,7 +191,7 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
   };
 
   return (
-    <div className="relative w-full h-[500px] overflow-hidden" data-scroll data-scroll-speed="2">
+    <div className="relative w-full h-[650px] overflow-hidden" data-scroll data-scroll-speed="2">
       {products.map((product, index) => (
         // The onClick for navigation is moved to the "See More" button
         <motion.div
