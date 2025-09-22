@@ -196,7 +196,7 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
         // The onClick for navigation is moved to the "See More" button
         <motion.div
           key={product.id}
-          className="absolute top-1/2 -translate-y-1/2 w-[400px] h-[400px] cursor-pointer"
+          className="absolute top-1/2 -translate-y-1/2 w-[400px] h-[500px] cursor-pointer"
           animate={getProductStyle(index)}
           initial={false}
           // The click handler is removed from the image container to prevent navigation on image click
