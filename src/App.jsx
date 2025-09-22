@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import ProductDisplay from "./pages/PDP";
 import  Checkout  from "./pages/Checkout";
-
+import { Analytics } from "@vercel/analytics/react"
 function App() {
   return (
     <>
