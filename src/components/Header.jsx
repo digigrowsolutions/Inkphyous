@@ -5,6 +5,8 @@ import { HeartIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { TbPaperBag } from "react-icons/tb";
+// Import the logo image
+import brandLogo from "../assets/iNKPHYOUS-01 (3).jpg";
 
 export default function Header({ openShopAll }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -155,12 +157,19 @@ export default function Header({ openShopAll }) {
             </motion.button>
           </div>
 
-       {/* Center: Brand Name */}
-<div className="main text-2xl md:text-4xl font-bold font-sans uppercase absolute left-1/2 -translate-x-1/2">
-  <a href="/" className="hover:text-red-600 main transition-colors duration-300">
-    Inkphyous
-  </a>
-</div>
+          {/* Center: Brand Logo and Hover Text */}
+          <div className="main absolute left-1/2 -translate-x-1/2 group">
+            <Link to="/" className="relative flex flex-col items-center">
+              <img
+                src={brandLogo}
+                alt="Inkphyous Logo"
+                className="h-10 md:h-12 w-auto mb-2"
+              />
+              <span className="text-md p-1 font-serif  font-bold tracking-wider text-red-600 transition-opacity duration-300 opacity-0 group-hover:opacity-100 absolute top-full mt-1 ">
+                "Feed Your Soul"
+              </span>
+            </Link>
+          </div>
 
           {/* Right Side */}
           <div className="flex items-center space-x-6 relative">
