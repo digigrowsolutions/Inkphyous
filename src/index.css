@@ -3,20 +3,30 @@
 /* Import local Plus Jakarta Sans font */
 @font-face {
   font-family: 'Plus Jakarta Sans';
-  src: url('/src/assets/FuturaCyrillicLight.ttf') format('truetype');
+  src: url('/src/assets/helvetica-neue-lt-pro-2-cufonfonts/HelveticaNeueLTProCn.otf') format('truetype');
+  font-style: normal;
+ }
+@font-face {
+  font-family: 'Rosemartin';
+  src: url('/src/assets/Rosemartin.otf') format('truetype');
   font-style: normal;
  }
  @font-face {
   font-family: 'main';
-  src: url('/src/assets/BebasNeue-Regular.ttf') format('truetype');
+  src: url('/src/assets/helvetica-neue-lt-pro-2-cufonfonts/HelveticaNeueLTProCn.otf') format('truetype');
   font-style: normal;
  }
  body{
    zoom: 80%;
  }
-*
+ *
+ {  font-family: 'Plus Jakarta Sans';
+
+
+ }
+.title
 {
-  font-family: 'Plus Jakarta Sans';
+  font-family: 'Rosemartin';
   font-weight: bold
 }
 .main

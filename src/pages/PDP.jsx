@@ -105,10 +105,11 @@ export default function ProductDisplay() {
           {/* LEFT: Product Name + Description + Images */}
           <div className="w-full md:w-1/2 flex flex-col items-start space-y-6">
             <div className="text-left">
-              <h2 className="text-3xl sm:text-7xl main font-bold uppercase tracking-wider text-gray-800">
+                            <p className=" text-2xl mb-2 leading-relaxed mt-2 font-extrabold main text-red-500 uppercase "> Feed Your Soul</p>
+
+              <h2 className="text-3xl sm:text-7xl title  font-extrabold  tracking-wider text-gray-800">
                 {product.name}
               </h2>
-              <p className="text-gray-600 text-xl leading-relaxed mt-2">{product.description}</p>
             </div>
 
             {/* Product Images */}
@@ -135,7 +136,7 @@ export default function ProductDisplay() {
           {/* RIGHT: Price, Size Dropdown, Add to Cart + Accordion */}
           <div className="w-full md:w-1/2 sticky top-20 self-start p-4 sm:p-6 flex flex-col gap-4">
             {/* Price */}
-            <p className="text-7xl main font-bold text-gray-900 text-right">₹{selectedVariant.priceINR}</p>
+            <p className="text-7xl main font-bold text-gray-900 text-right ">₹{selectedVariant.priceINR}</p>
 
             {/* Size Selector on Right Side */}
             <div className="flex justify-end mt-2">

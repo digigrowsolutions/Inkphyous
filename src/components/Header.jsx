@@ -129,7 +129,7 @@ export default function Header({ openShopAll }) {
       </AnimatePresence>
 
       <header className="bg-white text-black fixed top-0 left-0 w-full z-50">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between relative">
+        <div className=" mx-auto px-4 py-3 flex items-center justify-between relative">
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <motion.button
@@ -153,23 +153,26 @@ export default function Header({ openShopAll }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <CircleUserRound className="h-8 w-8" strokeWidth={1.5} />
             </motion.button>
           </div>
 
           {/* Center: Brand Logo and Hover Text */}
-          <div className="main absolute left-1/2 -translate-x-1/2 group">
-            <Link to="/" className="relative flex flex-col items-center">
-              <img
-                src={brandLogo}
-                alt="Inkphyous Logo"
-                className="h-10 md:h-12 w-auto mb-2"
-              />
-              <span className="text-md p-1 font-serif  font-bold tracking-wider text-red-600 transition-opacity duration-300 opacity-0 group-hover:opacity-100 absolute top-full mt-1 ">
-                "Feed Your Soul"
-              </span>
-            </Link>
-          </div>
+        <div className="main absolute left-1/2 -translate-x-1/2 group">
+  <Link to="/" className="relative flex items-center justify-center">
+    {/* Brand Logo */}
+    <img
+      src={brandLogo}
+      alt="Inkphyous Logo"
+      className="h-10 md:h-8 w-auto transition-opacity duration-300 group-hover:opacity-0"
+    />
+
+    {/* Feed Your Soul text */}
+    <span className="absolute text-lg md:text-base font-serif font-bold tracking-wider text-red-600 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+      "Feed Your Soul"
+    </span>
+  </Link>
+</div>
+
 
           {/* Right Side */}
           <div className="flex items-center space-x-6 relative">
@@ -192,6 +195,7 @@ export default function Header({ openShopAll }) {
                 </motion.div>
               )}
             </AnimatePresence>
+            
 
             {/* Search Button */}
             <motion.button
@@ -202,6 +206,7 @@ export default function Header({ openShopAll }) {
             >
               <Search className="h-6 w-6" strokeWidth={1.5} />
             </motion.button>
+              <CircleUserRound className="h-6 w-6" strokeWidth={1.5} />
 
             {/* Cart Button */}
             <motion.button
