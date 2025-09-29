@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import products from "../Utils/Products";
-import { Heart, ChevronDown } from 'lucide-react';
+import { Heart, ChevronDown } from "lucide-react";
 
 // Top Hero Carousel
 function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
@@ -28,9 +28,33 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
       transformOrigin: "center center",
     };
 
-    if (isCurrent) return { ...base, zIndex: 10, filter: "blur(0px)", transform: "translateX(-50%) scale(1.4)", left: "50%", opacity: 1 };
-    if (isNext) return { ...base, zIndex: 5, filter: "blur(3px)", transform: "translateX(40%) scale(0.6)", left: "50%", opacity: 0.5 };
-    if (isPrev) return { ...base, zIndex: 5, filter: "blur(3px)", transform: "translateX(-140%) scale(0.6)", left: "50%", opacity: 0.5 };
+    if (isCurrent)
+      return {
+        ...base,
+        zIndex: 10,
+        filter: "blur(0px)",
+        transform: "translateX(-50%) scale(1.4)",
+        left: "50%",
+        opacity: 1,
+      };
+    if (isNext)
+      return {
+        ...base,
+        zIndex: 5,
+        filter: "blur(3px)",
+        transform: "translateX(40%) scale(0.6)",
+        left: "50%",
+        opacity: 0.5,
+      };
+    if (isPrev)
+      return {
+        ...base,
+        zIndex: 5,
+        filter: "blur(3px)",
+        transform: "translateX(-140%) scale(0.6)",
+        left: "50%",
+        opacity: 0.5,
+      };
     return { display: "none" };
   };
 
@@ -52,7 +76,6 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
         </motion.div>
       ))}
     </div>
-
   );
 }
 
@@ -87,25 +110,45 @@ export default function ProductDisplay() {
     }
   }
 
-  if (!product || !selectedVariant) return <div className="text-center py-16 text-gray-800 text-xl">Product not found</div>;
+  if (!product || !selectedVariant)
+    return (
+      <div className="text-center py-16 text-gray-800 text-xl">
+        Product not found
+      </div>
+    );
 
-  const productImages = product.variants.map((v, i) => ({ id: v.id, url: v.image, angle: v.color }));
+  const productImages = product.variants.map((v, i) => ({
+    id: v.id,
+    url: v.image,
+    angle: v.color,
+  }));
 
   return (
-<section className="min-h-screen bg-white  flex flex-col items-center justify-start">
+    <section className="min-h-screen bg-white flex flex-col items-center justify-start">
       {/* Hero Carousel */}
-      <div className="w-full fixed top-0 z-10" style={{ filter: `blur(${Math.min(scrollY / 100, 10)}px)`, transition: "filter 0.3s ease" }}>
-        <HeroCarousel variants={product.variants} activeIndex={activeVariantIndex} setActiveIndex={setActiveVariantIndex} />
+      <div
+        className="w-full fixed top-0 z-10"
+        style={{
+          filter: `blur(${Math.min(scrollY / 100, 10)}px)`,
+          transition: "filter 0.3s ease",
+        }}
+      >
+        <HeroCarousel
+          variants={product.variants}
+          activeIndex={activeVariantIndex}
+          setActiveIndex={setActiveVariantIndex}
+        />
       </div>
 
       {/* Content below hero */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-[700px] z-20 relative py-12 sm:py-16">
         <div className="flex flex-col md:flex-row items-start gap-8">
-
           {/* LEFT: Product Name + Description + Images */}
           <div className="w-full md:w-1/2 flex flex-col items-start space-y-6">
             <div className="text-left">
-                            <p className=" text-2xl mb-2 leading-relaxed mt-2 font-extrabold main text-red-500 uppercase "> Feed Your Soul</p>
+              <p className=" text-2xl mb-2 leading-relaxed mt-2 font-extrabold main text-red-500 uppercase ">
+                Feed Your Soul
+              </p>
 
               <h2 className="text-3xl sm:text-7xl title  font-extrabold  tracking-wider text-gray-800">
                 {product.name}
@@ -117,11 +160,14 @@ export default function ProductDisplay() {
               {productImages.map((image, index) => (
                 <motion.div
                   key={image.id}
-                  className="w-full  bg-white p-2 "
+                  className="w-full bg-white p-2 cursor-pointer"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
+                  onClick={() =>
+                    navigate(`/pdpc/${product.id}?variantId=${image.id}`)
+                  }
                 >
                   <img
                     src={image.url}
@@ -136,39 +182,47 @@ export default function ProductDisplay() {
           {/* RIGHT: Price, Size Dropdown, Add to Cart + Accordion */}
           <div className="w-full md:w-1/2 sticky top-20 self-start p-4 sm:p-6 flex flex-col gap-4">
             {/* Price */}
-            <p className="text-7xl main font-bold text-gray-900 text-right ">₹{selectedVariant.priceINR}</p>
+            <p className="text-7xl main font-bold text-gray-900 text-right ">
+              ₹{selectedVariant.priceINR}
+            </p>
 
             {/* Size Selector on Right Side */}
             <div className="flex justify-end mt-2">
               <div className="w-40">
-                <label className="block text-xl text-black mb-1 font-medium text-right">Select Size</label>
-               <select
-  value={selectedSize}
-  onChange={(e) => setSelectedSize(e.target.value)}
-  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
->
-  <option value="">Select size</option>
-  {product.sizeOptions.map((size) => (
-    <option key={size} value={size}>
-      {size}
-    </option>
-  ))}
-</select>
-
-
+                <label className="block text-xl text-black mb-1 font-medium text-right">
+                  Select Size
+                </label>
+                <select
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                >
+                  <option value="">Select size</option>
+                  {product.sizeOptions.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            {/* Add to Cart + Wishlist (Right Aligned) */}
+            {/* Add to Cart + Wishlist */}
             <div className="flex justify-end gap-2 mt-2">
               <motion.button
-                className={`px-6 py-2 rounded-full text-xl uppercase tracking-wider transition-colors ${selectedSize ? "bg-gray-800 text-white hover:bg-gray-700" : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                  }`}
+                className={`px-6 py-2 rounded-full text-xl uppercase tracking-wider transition-colors ${
+                  selectedSize
+                    ? "bg-gray-800 text-white hover:bg-gray-700"
+                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                }`}
                 whileHover={{ scale: selectedSize ? 1.05 : 1 }}
                 whileTap={{ scale: selectedSize ? 0.95 : 1 }}
                 disabled={!selectedSize}
                 onClick={() => {
-                  if (selectedSize) navigate(`/checkout?productId=${product.id}&variantId=${selectedVariant.id}&size=${selectedSize}`);
+                  if (selectedSize)
+                    navigate(
+                      `/checkout?productId=${product.id}&variantId=${selectedVariant.id}&size=${selectedSize}`
+                    );
                 }}
               >
                 Add to Cart
@@ -182,53 +236,7 @@ export default function ProductDisplay() {
                 <Heart className="h-4 w-4" />
               </motion.button>
             </div>
-
-            {/* Accordion for Product Description & Details */}
-            <div className="mt-6 w-full divide-y divide-gray-200 border-t border-b border-gray-200">
-
-
-              {/* Details */}
-              <details className="group py-3">
-                <summary className="flex text-2xl justify-between items-center cursor-pointer font-medium text-gray-800 hover:text-gray-900">
-                  Details
-                  <span className="transition-transform group-open:rotate-180">   <ChevronDown className="h-6 w-6" />
-                  </span>
-                </summary>
-                <ul className="mt-2 text-xl text-gray-600 space-y-1 list-disc ml-5">
-                  <li><strong>Fabric:</strong> {product.details.fabric}</li>
-                  <li><strong>Wash Care:</strong> {product.details.washCare}</li>
-                  <li><strong>Fit:</strong> {product.details.fit}</li>
-                  <li><strong>Features:</strong> {product.details.features}</li>
-                </ul>
-              </details>
-
-              {/* Free Delivery */}
-              <details className="group py-3">
-                <summary className="flex text-2xl justify-between items-center cursor-pointer font-medium text-gray-800 hover:text-gray-900">
-                  Free Delivery & Returns
-                  <span className="transition-transform group-open:rotate-180">    <ChevronDown className="h-6 w-6" />
-                  </span>
-                </summary>
-                <p className="mt-2 text-xl text-gray-600">
-                  We offer free delivery and hassle-free returns within 14 days.
-                </p>
-              </details>
-
-              {/* Reviews */}
-              <details className="group py-3">
-                <summary className="flex text-2xl justify-between items-center cursor-pointer font-medium text-gray-800 hover:text-gray-900">
-                  Reviews ({product.reviews})
-                  <span className="transition-transform group-open:rotate-180">   <ChevronDown className="h-6 w-6" />
-                  </span>
-                </summary>
-                <p className="mt-2 text-xl text-gray-600">
-                  Rated {product.rating}★ by {product.reviews} customers.
-                </p>
-              </details>
-            </div>
-
           </div>
-
         </div>
       </div>
     </section>

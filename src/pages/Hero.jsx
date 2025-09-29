@@ -102,7 +102,7 @@ function ProductInfo({ activeProduct, onAddToCart }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.5 }}
-        className="text-center w-full max-w-xl mx-auto cursor-pointer backdrop-blur-sm rounded-2xl p-6"
+        className="text-center w-full max-w-5xl mx-auto cursor-pointer backdrop-blur-sm rounded-2xl p-6"
       >
         <div className="mb-4">
           <motion.h2
@@ -191,7 +191,7 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
   };
 
   return (
-    <div className="relative w-full h-[650px] overflow-hidden" data-scroll data-scroll-speed="2">
+    <div className="relative w-full h-[500px] overflow-hidden" data-scroll data-scroll-speed="2">
       {products.map((product, index) => (
         // The onClick for navigation is moved to the "See More" button
         <motion.div

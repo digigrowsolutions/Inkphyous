@@ -38,6 +38,11 @@ export default function Checkout() {
     FREESHIP: 0.15, // 15% discount
   };
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const productId = searchParams.get("productId");
     const variantId = searchParams.get("variantId");
@@ -253,6 +258,7 @@ export default function Checkout() {
                   />
                 </div>
               </div>
+              {/* Payment Details */}
               <div className="mt-6">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">Payment Details</h2>
                 <div className="space-y-4">
@@ -332,7 +338,7 @@ export default function Checkout() {
                       </div>
                     </div>
                   )}
-
+                  {/* Other payment options */}
                   {paymentMethod === "upi" && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700">UPI ID *</label>
@@ -344,7 +350,6 @@ export default function Checkout() {
                       />
                     </div>
                   )}
-
                   {paymentMethod === "paypal" && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700">PayPal Email *</label>
@@ -356,7 +361,6 @@ export default function Checkout() {
                       />
                     </div>
                   )}
-
                   {paymentMethod === "bank" && (
                     <div className="space-y-4">
                       <div>
@@ -379,7 +383,6 @@ export default function Checkout() {
                       </div>
                     </div>
                   )}
-
                   {paymentMethod === "cod" && (
                     <p className="text-sm text-gray-600">You will pay ₹{calculateTotal()} upon delivery.</p>
                   )}
