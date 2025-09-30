@@ -76,7 +76,7 @@ export default function PendantViewer() {
   const isInteracting = useRef(false);
 
   return (
-    <div className="h-screen w-full bg-black flex justify-center items-center">
+    <div className="h-[1200px] w-full  flex justify-center items-center">
       <Canvas camera={{ position: [0, 2, 10], fov: 50 }}>
         {/* Lights */}
         <ambientLight intensity={0.5} />

@@ -7,6 +7,7 @@ import { useCart } from "./CartContext";
 import { TbPaperBag } from "react-icons/tb";
 // Import the logo image
 import brandLogo from "../assets/logo.png";
+import hoverLogo from "../assets/feedlogo.png";
 
 export default function Header({ openShopAll }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -159,19 +160,22 @@ export default function Header({ openShopAll }) {
           {/* Center: Brand Logo and Hover Text */}
         <div className="main absolute left-1/2 -translate-x-1/2 group">
   <Link to="/" className="relative flex items-center justify-center">
-    {/* Brand Logo */}
+    {/* Original Brand Logo */}
     <img
       src={brandLogo}
       alt="Inkphyous Logo"
-      className="h-10 md:h-8 w-auto transition-opacity duration-300 group-hover:opacity-0"
+      className="h-32 w-full transition-opacity duration-300 group-hover:opacity-0"
     />
 
-    {/* Feed Your Soul text */}
-    <span className="absolute text-lg md:text-base font-serif font-bold tracking-wider text-red-600 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-      "Feed Your Soul"
-    </span>
+    {/* Hover Brand Logo */}
+    <img
+      src={hoverLogo} // replace this with the second image you want on hover
+      alt="Inkphyous Hover Logo"
+      className="absolute h-[250px] w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+    />
   </Link>
 </div>
+
 
 
           {/* Right Side */}
