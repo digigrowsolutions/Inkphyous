@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { TbPaperBag } from "react-icons/tb";
 // Import the logo image
-import brandLogo from "../assets/iNKPHYOUS-01 (3).jpg";
+import brandLogo from "../assets/logo.png";
 
 export default function Header({ openShopAll }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
