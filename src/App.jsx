@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Opener from "./components/3DModel";
 import Home from "./pages/Home";
 import Header from "./components/Header";
@@ -11,18 +11,13 @@ import ContactUs from "./pages/ContactUs";
 import { Analytics } from "@vercel/analytics/react";
 
 function App() {
-  const location = useLocation();
-
-  // Paths where header/footer should NOT be shown
-  const hideHeaderFooter = location.pathname === "/";
-
   return (
     <>
-      {!hideHeaderFooter && <Header />}
+      {/* Always show Header */}
+      <Header />
 
       <Routes>
-        <Route path="/" element={<home />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDisplay />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/pdpc/:id" element={<PDPC />} />
