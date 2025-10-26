@@ -38,7 +38,8 @@ export default function Header({ openShopAll }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState("En");
-  const { cartItems, removeFromCart, lastAddedItem } = useCart();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { cartItems, lastAddedItem } = useCart();
   const cartDropdownRef = useRef(null);
   const searchInputRef = useRef(null);
   const langDropdownRef = useRef(null);
@@ -79,6 +80,16 @@ export default function Header({ openShopAll }) {
     if (isSearchOpen && searchInputRef.current) searchInputRef.current.focus();
   }, [isSearchOpen]);
 
+  // 🔽 Scroll Effect: add border only when scrolled
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) setIsScrolled(true);
+      else setIsScrolled(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const cartItemCount = cartItems.length;
 
   const searchVariants = {
@@ -106,9 +117,13 @@ export default function Header({ openShopAll }) {
         )}
       </AnimatePresence>
 
-      <header className="bg-white text-black fixed top-0 left-0 w-full z-50 shadow-sm">
+      {/* Header */}
+      <header
+        className={`bg-white text-black fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+          isScrolled ? "shadow-xs" : "border-b-0"
+        }`}
+      >
         <div className="mx-auto px-4 py-3 flex items-center justify-between relative">
-          
           {/* Mobile Menu */}
           <div className="md:hidden">
             <motion.button onClick={toggleSidebar} className="p-2">

@@ -9,7 +9,6 @@ import products from "../Utils/Products";
 import { Rewind } from "lucide-react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../components/CartContext";
-import Lightning from "../UI/Lightning";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 // ================== CART NOTIFICATION ==================
@@ -21,7 +20,7 @@ function CartNotification({ product, onClose }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-20 right-4 p-4 bg-gray-800 text-white rounded-lg shadow-lg flex items-center space-x-4 z-[200]"
+      className="fixed top-20 right-4 p-4 bg-gray-800 text-gray-100 rounded-lg  flex items-center space-x-4 z-[200]"
     >
       <img
         src={product.image}
@@ -32,7 +31,7 @@ function CartNotification({ product, onClose }) {
         <p className="font-semibold">{product.name} added to cart!</p>
         <p className="text-sm">Proceed to checkout to complete your purchase.</p>
       </div>
-      <button onClick={onClose} className="text-gray-400 hover:text-white">
+      <button onClick={onClose} className="text-gray-400 hover:text-gray-100">
         <XMarkIcon className="h-5 w-5" />
       </button>
     </motion.div>
@@ -73,7 +72,7 @@ function GooeyButton({ text, onClick }) {
             position: relative;
             overflow: hidden;
             color: white;
-            background: #333;
+            background: #1f2937; /* gray-800 */
             border: none;
             border-radius: 9999px;
             cursor: pointer;
@@ -138,17 +137,17 @@ function ProductInfo({ activeProduct }) {
         className="text-center w-full max-w-5xl mx-auto cursor-pointer backdrop-blur-sm rounded-2xl p-6"
       >
         <motion.h2
-          className="text-xl sm:text-2xl uppercase md:text-7xl font-bold tracking-wider text-white mb-2"
+          className="text-xl sm:text-2xl uppercase md:text-7xl font-bold tracking-wider text-gray-900 mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           {activeProduct.name}
         </motion.h2>
-        <motion.p className="mt-2 font-light text-white text-xl">
+        <motion.p className="mt-2 font-light text-gray-800 text-xl">
           {activeProduct.description}
         </motion.p>
-        <div className="flex justify-center gap-4 w-full">
+        <div className="flex justify-center gap-4 w-full mt-4">
           <GooeyButton
             text="See More"
             onClick={(e) => {
@@ -166,7 +165,7 @@ function ProductInfo({ activeProduct }) {
 function ProductListing({ products, navigate, onBackClick }) {
   return (
     <motion.div
-      className="p-8 w-full text-white"
+      className="p-8 w-full text-gray-900"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -174,7 +173,7 @@ function ProductListing({ products, navigate, onBackClick }) {
     >
       <button
         onClick={onBackClick}
-        className="mb-8 text-white border border-gray-400 px-6 py-3 rounded-md text-xs sm:text-sm uppercase tracking-wider hover:bg-gray-700 transition-all duration-300 flex items-center"
+        className="mb-8 text-gray-800 border border-gray-400 px-6 py-3 rounded-md text-xs sm:text-sm uppercase tracking-wider hover:bg-gray-200 transition-all duration-300 flex items-center"
       >
         <Rewind className="mr-2 h-4 w-4" />
         BACK
@@ -187,7 +186,7 @@ function ProductListing({ products, navigate, onBackClick }) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="w-full h-auto bg-gray-200">
+            <div className="w-full h-auto bg-gray-100">
               <img
                 src={product.image}
                 alt={product.name}
@@ -195,8 +194,8 @@ function ProductListing({ products, navigate, onBackClick }) {
               />
             </div>
             <div className="mt-2 flex justify-between items-start">
-              <h3 className="text-xl font-semibold">{product.name}</h3>
-              <p className="text-xl font-semibold">
+              <h3 className="text-xl font-semibold text-gray-900">{product.name}</h3>
+              <p className="text-xl font-semibold text-gray-800">
                 ₹{product.discountPriceINR}
               </p>
             </div>
@@ -209,7 +208,6 @@ function ProductListing({ products, navigate, onBackClick }) {
 
 // ================== MAIN CAROUSEL ==================
 function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }) {
-  // Auto-slide
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % products.length);
@@ -217,7 +215,6 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
     return () => clearInterval(interval);
   }, [products.length, setActiveIndex]);
 
-  // Notify parent on product change
   useEffect(() => {
     onProductChange(products[activeIndex], activeIndex);
   }, [activeIndex, onProductChange, products]);
@@ -240,13 +237,8 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
     return { display: "none" };
   };
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + products.length) % products.length);
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % products.length);
-  };
+  const handlePrev = () => setActiveIndex((prev) => (prev - 1 + products.length) % products.length);
+  const handleNext = () => setActiveIndex((prev) => (prev + 1) % products.length);
 
   return (
     <div className="relative w-full h-[600px] overflow-hidden flex justify-center items-center" data-scroll data-scroll-speed="2">
@@ -260,7 +252,7 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-contain rounded-xl shadow-lg"
+            className="w-full h-full object-contain rounded-xl "
           />
         </motion.div>
       ))}
@@ -268,17 +260,17 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
       {/* Left Arrow */}
       <button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/40 transition"
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-800/20 backdrop-blur-md flex items-center justify-center hover:bg-gray-800/40 transition"
       >
-        <ArrowLeft className="h-6 w-6 text-white" />
+        <ArrowLeft className="h-6 w-6 text-gray-900" />
       </button>
 
       {/* Right Arrow */}
       <button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/40 transition"
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-800/20 backdrop-blur-md flex items-center justify-center hover:bg-gray-800/40 transition"
       >
-        <ArrowRight className="h-6 w-6 text-white" />
+        <ArrowRight className="h-6 w-6 text-gray-900" />
       </button>
     </div>
   );
@@ -291,7 +283,7 @@ function CategoryPanel({ navItems, selectedIndex, setSelectedIndex }) {
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col gap-6 text-white sticky top-32"
+      className="flex flex-col gap-6 text-gray-800 sticky top-32"
     >
       {navItems.map((item, index) => (
         <motion.button
@@ -300,7 +292,7 @@ function CategoryPanel({ navItems, selectedIndex, setSelectedIndex }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={`text-left text-lg md:text-xl font-semibold uppercase transition-all ${
-            selectedIndex === index ? "text-red-500" : "text-white/70"
+            selectedIndex === index ? "text-red-500" : "text-gray-800/70"
           }`}
         >
           {item.label}
@@ -325,6 +317,7 @@ export default function Home() {
     acc[p.category] = (acc[p.category] || 0) + 1;
     return acc;
   }, {});
+
   const categoryOnlyItems = Object.entries(categoryMap).map(([category, count]) => ({
     label: (
       <>
@@ -336,10 +329,14 @@ export default function Home() {
     ),
     category,
   }));
+
   const navItems = [...categoryOnlyItems, { label: "Shop All", category: "all" }];
   const selectedCategory = navItems[selectedCategoryIndex].category;
+
   const filteredProducts =
-    selectedCategory === "all" ? products : products.filter((p) => p.category === selectedCategory);
+    selectedCategory === "all"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
 
   useEffect(() => {
     if (selectedCategory !== "all") {
@@ -368,12 +365,7 @@ export default function Home() {
   };
 
   return (
-    <section className="relative min-h-screen flex justify-center items-start overflow-hidden text-white pt-24">
-      {/* ⚡ BACKGROUND LIGHTNING */}
-      <div className="absolute inset-0 -z-10">
-        <Lightning hue={220} xOffset={0} speed={1} intensity={1} size={1} />
-      </div>
-
+    <section className="relative h-fit flex justify-center items-start overflow-hidden text-gray-900 pt-24 bg-gray-50">
       {/* LEFT CATEGORY PANEL */}
       <div className="hidden md:flex flex-col ml-8 mr-4">
         <CategoryPanel
@@ -386,7 +378,9 @@ export default function Home() {
       {/* MAIN CONTENT */}
       <div className="flex-1 flex justify-center w-full">
         <motion.div
-          className={`w-full max-w-6xl ${selectedCategory === "all" ? "overflow-y-auto h-full hide-scrollbar" : ""}`}
+          className={`w-full max-w-6xl ${
+            selectedCategory === "all" ? "overflow-y-auto h-full hide-scrollbar" : ""
+          }`}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}

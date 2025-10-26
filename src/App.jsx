@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Opener from "./components/3DModel";
-import Home from "./pages/Home";
+import Welcome from "./pages/Welcome";
+import Home from "./pages/Home"
 import Header from "./components/Header";
 import ProductDisplay from "./pages/PDP";
 import Checkout from "./pages/Checkout";
@@ -16,7 +17,9 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Welcome />} />
+                <Route path="/home" element={<Home />} />
+
         <Route path="/product/:id" element={<ProductDisplay />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/pdpc/:id" element={<PDPC />} />
