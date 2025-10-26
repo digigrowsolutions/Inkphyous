@@ -6,10 +6,9 @@ import ProductDisplay from "./pages/PDP";
 import Checkout from "./pages/Checkout";
 import PDPC from "./pages/PDPC";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsConditions from "./pages/TermsConditions";
 import ContactUs from "./pages/ContactUs";
 import { Analytics } from "@vercel/analytics/react";
-
+import Footer from "./components/Footer";
 function App() {
   return (
     <>
@@ -21,11 +20,10 @@ function App() {
         <Route path="/product/:id" element={<ProductDisplay />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/pdpc/:id" element={<PDPC />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/privacypolicy&termsconditions" element={<PrivacyPolicy />} />
         <Route path="/contact" element={<ContactUs />} />
       </Routes>
-
+<Footer/>
       <Analytics />
     </>
   );

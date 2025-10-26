@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import products from "../Utils/Products";
-import { Heart, ChevronDown } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
 
 // Top Hero Carousel
 function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
@@ -59,7 +59,21 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
   };
 
   return (
-    <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex justify-center items-center overflow-hidden">
+    <div className="relative mt-16 w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex justify-center items-center overflow-hidden">
+      {/* Back Button on top-left of carousel */}
+    <div className="absolute top-4 left-48 z-20">
+  <motion.button
+    className="flex items-center gap-2 px-4 py-2 bg-white bg-opacity-30 backdrop-blur-md rounded-full shadow-md text-gray-800 font-medium hover:bg-opacity-60 transition-all duration-300"
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={() => navigate(-1)}
+  >
+    <ArrowLeft className="h-5 w-5" />
+    Back
+  </motion.button>
+</div>
+
+
       {variants.map((variant, index) => (
         <motion.div
           key={variant.id}
@@ -117,14 +131,14 @@ export default function ProductDisplay() {
       </div>
     );
 
-  const productImages = product.variants.map((v, i) => ({
+  const productImages = product.variants.map((v) => ({
     id: v.id,
     url: v.image,
     angle: v.color,
   }));
 
   return (
-    <section className="min-h-screen bg-white flex flex-col items-center justify-start">
+    <section className="min-h-screen bg-white flex flex-col items-center justify-start relative">
       {/* Hero Carousel */}
       <div
         className="w-full fixed top-0 z-10"
