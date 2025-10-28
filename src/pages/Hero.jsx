@@ -128,9 +128,7 @@ function ProductInfo({ activeProduct }) {
         >
           {activeProduct.name}
         </motion.h2>
-        <motion.p className="mt-2 font-light text-gray-800 text-xl">
-          {activeProduct.description}
-        </motion.p>
+       
         <div className="flex justify-center gap-4 w-full mt-4">
           <GooeyButton
             text="See More"
