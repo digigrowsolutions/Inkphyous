@@ -155,7 +155,7 @@ export default function Header({ openShopAll }) {
 )}
           {/* Center: 3D Model */}
           <div
-            onClick={() => (window.location.href = "/home")}
+            onClick={() => (window.location.href = "/")}
             className="absolute mt-4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[120px] cursor-pointer"
           >
             <Canvas camera={{ position: [0, 2, 10], fov: 50 }}>

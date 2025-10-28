@@ -3,98 +3,98 @@ import React, { useState } from 'react';
 export default function LegalitiesPage() {
   const [activePage, setActivePage] = useState('home');
 
-  const renderHome = () => (
-    <div className="min-h-screen bg-white flex items-center justify-center p-8">
-      <div className="w-full max-w-6xl flex items-center justify-between">
-        <div className="flex-1">
-          <h1 className="text-7xl font-bold text-gray-900 tracking-tight">
-            Legalities
-          </h1>
-        </div>
-
-        <div className="h-96 w-px bg-gradient-to-b from-transparent via-red-500 to-transparent mx-16"></div>
-
-        <div className="flex-1 space-y-8">
-          <button
-            onClick={() => setActivePage('privacy')}
-            className="block text-3xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-left"
-          >
-            Privacy & Policy
-          </button>
-
-          <button
-            onClick={() => setActivePage('terms')}
-            className="block text-3xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-left"
-          >
-            Terms & Conditions
-          </button>
-
-          <button
-            onClick={() => setActivePage('shipping')}
-            className="block text-3xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-left"
-          >
-            Shipping Policy
-          </button>
-
-          <button
-            onClick={() => setActivePage('returns')}
-            className="block text-3xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-left"
-          >
-            Return & Exchange Policy
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderPolicyPage = (title, content) => (
-    <div className="min-h-screen bg-white p-8">
-      <div className="max-w-6xl mx-auto p-12">
-        <h1 className="text-5xl font-bold text-gray-900 text-center mb-12">
-          {title}
+const renderHome = () => (
+  <div className="min-h-screen mt-12 bg-white flex items-center justify-center p-8">
+    <div className="w-full max-w-6xl flex items-center justify-between">
+      
+      {/* Left Section - Legalities */}
+      <div className="flex-1 flex justify-start">
+        <h1 className="text-6xl font-bold text-gray-900 tracking-tight text-left">
+          Legalities
         </h1>
+      </div>
 
-        <div className="flex gap-12">
-          {/* Left Sticky Navigation/Sidebar */}
-          <div className="w-48 flex-shrink-0">
-            <div className="sticky top-36 space-y-4">
-              <button
-                onClick={() => setActivePage('home')}
-                className="mb-4 px-6 py-2 bg-white text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-600 hover:text-white transition-colors"
-              >
-                ← Back
-              </button>
-              {content.sections.map((section, idx) => (
-                <a
-                  key={idx}
-                  href={`#section-${idx}`}
-                  className="block text-base font-semibold text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  {section.title}
-                </a>
-              ))}
-            </div>
-          </div>
+      {/* Vertical Line */}
+      <div className="h-96 w-px bg-gradient-to-b from-transparent via-red-500 to-transparent mx-16"></div>
 
-          {/* Vertical Divider */}
-          <div className="w-px bg-gradient-to-b from-transparent via-red-500 to-transparent"></div>
+      {/* Right Section - Buttons */}
+      <div className="flex-1 flex flex-col items-end space-y-8">
+        <button
+          onClick={() => setActivePage('privacy')}
+          className="block text-2xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-right"
+        >
+          Privacy & Policy
+        </button>
 
-          {/* Right Main Content Area */}
-          <div className="flex-1 space-y-12">
-            {content.sections.map((section, idx) => (
-              <div key={idx} id={`section-${idx}`} className="scroll-mt-0">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">{section.title}</h2>
-                <div className="prose prose-gray max-w-none">
-                  {section.content}
-                </div>
+        <button
+          onClick={() => setActivePage('terms')}
+          className="block text-2xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-right"
+        >
+          Terms & Conditions
+        </button>
+
+        <button
+          onClick={() => setActivePage('shipping')}
+          className="block text-2xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-right"
+        >
+          Shipping Policy
+        </button>
+
+        <button
+          onClick={() => setActivePage('returns')}
+          className="block text-2xl font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-300 text-right"
+        >
+          Return & Exchange Policy
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+
+const renderPolicyPage = (title, content) => (
+  <div className="min-h-screen mt-12 bg-white p-8">
+    <div className="max-w-6xl mx-auto">
+      
+      {/* Page Title */}
+      <h1 className="text-5xl font-bold text-gray-900 text-center mb-16">
+        {title}
+      </h1>
+
+      {/* Two-column Layout */}
+      <div className="flex items-stretch justify-between gap-12">
+        
+        {/* Left Column - Section Titles */}
+        <div className="flex-1 flex flex-col items-start space-y-12">
+          {content.sections.map((section, idx) => (
+            <h2
+              key={idx}
+              className="text-lg font-bold text-gray-800 tracking-tight"
+            >
+              {section.title}
+            </h2>
+          ))}
+        </div>
+
+        {/* Center Divider */}
+        <div className="self-stretch w-px bg-gradient-to-b from-transparent via-red-500 to-transparent"></div>
+
+        {/* Right Column - Section Content */}
+        <div className="flex-1 flex flex-col space-y-12 text-justify">
+          {content.sections.map((section, idx) => (
+            <div key={idx}>
+              <div className="text-gray-700 text-base leading-relaxed space-y-4">
+                {section.content}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  );
-  
+  </div>
+);
+
+
   // ------------------------------------------------------------------
   // SHIPPING POLICY CONTENT (UPDATED FROM DOCUMENT)
   // ------------------------------------------------------------------
