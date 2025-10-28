@@ -3,10 +3,32 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
+import { Heart, ArrowLeft, Plus } from "lucide-react";
+// ✅ Assuming Products.js is updated with the sizeChart and shippingPolicy
 import products from "../Utils/Products";
-import { Heart, ArrowLeft } from "lucide-react";
 
-// Top Hero Carousel
+// Helper function to find the product and selected variant
+const getProductAndVariant = (id) => {
+  let product = null;
+  let selectedVariant = null;
+
+  for (const p of products) {
+    if (p.id === parseInt(id)) {
+      product = p;
+      selectedVariant = p.variants[0];
+      break;
+    }
+    const variant = p.variants.find((v) => v.id === id);
+    if (variant) {
+      product = p;
+      selectedVariant = variant;
+      break;
+    }
+  }
+  return { product, selectedVariant };
+};
+
+// Hero Carousel Component (No changes)
 function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
   const navigate = useNavigate();
 
@@ -21,13 +43,11 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
     const isCurrent = index === activeIndex;
     const isNext = index === (activeIndex + 1) % variants.length;
     const isPrev = index === (activeIndex - 1 + variants.length) % variants.length;
-
     const base = {
       position: "absolute",
       transition: "all 1s cubic-bezier(0.25, 0.1, 0.25, 1)",
       transformOrigin: "center center",
     };
-
     if (isCurrent)
       return {
         ...base,
@@ -60,20 +80,6 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
 
   return (
     <div className="relative mt-16 w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex justify-center items-center overflow-hidden">
-      {/* Back Button on top-left of carousel */}
-    <div className="absolute top-4 left-48 z-20">
-  <motion.button
-    className="flex items-center gap-2 px-4 py-2 bg-white bg-opacity-30 backdrop-blur-md rounded-full shadow-md text-gray-800 font-medium hover:bg-opacity-60 transition-all duration-300"
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={() => navigate(-1)}
-  >
-    <ArrowLeft className="h-5 w-5" />
-    Back
-  </motion.button>
-</div>
-
-
       {variants.map((variant, index) => (
         <motion.div
           key={variant.id}
@@ -93,13 +99,117 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
   );
 }
 
+// Accordion Component (MODIFIED)
+function Accordion({ title, content, isOpen, onClick }) {
+  const renderContent = () => {
+    if (title === "Size Chart" && typeof content === 'object' && content !== null) {
+      // Logic for rendering the Size Chart table, matching the image
+      const { title: chartTitle, header, measurements } = content;
+      const rows = Object.entries(measurements);
+
+      return (
+        <div className="pt-2 space-y-2">
+          <p className="font-medium text-gray-800">{chartTitle}</p>
+          <p className="text-sm">To assist you in selecting the most accurate fit, please refer to the product measurement details provided for each item.</p>
+          <p className="text-sm font-semibold">Product Measurement (Inches)</p>
+          <table className="w-full border-collapse border border-gray-300 text-sm">
+            <thead>
+              <tr className="bg-gray-100">
+                {header.map((head, index) => (
+                  <th key={index} className="border border-gray-300 p-2 text-left">{head}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(([key, values]) => (
+                <tr key={key}>
+                  <td className="border border-gray-300 p-2 font-medium">{key}</td>
+                  {values.map((val, index) => (
+                    <td key={index} className="border border-gray-300 p-2">{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    } else if (title === "Shipping Policy" && Array.isArray(content)) {
+      // Logic for rendering Shipping Policy, matching the image (bullet points)
+      return (
+        <div className="pt-2">
+          <ul className="list-disc pl-5 space-y-2 text-sm text-gray-800">
+            {content.map((item, index) => (
+              <li key={index} className="marker:text-black">
+                {item.includes('Shipping Policy') ? (
+                    // This handles the "Read our full Shipping Policy" line
+                    <p className="inline">Read our full <span className="text-red-600 font-semibold cursor-pointer hover:underline">Shipping Policy</span> for more details</p>
+                ) : (
+                    item
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    } else {
+      // Default rendering for Details (simple list/array)
+      const contentArray = Array.isArray(content)
+        ? content
+        : typeof content === "object" && content !== null
+        ? Object.entries(content).map(([key, value]) => `${key}: ${value}`)
+        : [content];
+
+      return (
+        <div className="pt-2">
+          <ul className="list-disc pl-5 space-y-1 text-sm">
+            {contentArray.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className="w-full">
+      <button
+        className="flex justify-between items-center w-full py-4 text-left text-lg text-gray-800 focus:outline-none"
+        onClick={onClick}
+      >
+        <span className="flex-1 uppercase font-semibold">{title}</span>
+        <Plus
+          className={`h-6 w-6 transition-transform ${
+            isOpen ? "rotate-45" : "rotate-0"
+          }`}
+          style={{ strokeWidth: 3 }}
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden pb-4 text-gray-600 border-t border-gray-200"
+          >
+            {renderContent()}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // Main Product Display
 export default function ProductDisplay() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
-  const [activeVariantIndex, setActiveVariantIndex] = useState(0);
+  const [activeVariantId, setActiveVariantId] = useState("");
+  const [activeAccordion, setActiveAccordion] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -107,22 +217,17 @@ export default function ProductDisplay() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Find product and variant
-  let product = null;
-  let selectedVariant = null;
-  for (const p of products) {
-    if (p.id === parseInt(id)) {
-      product = p;
-      selectedVariant = p.variants[0];
-      break;
+  // Use a hardcoded ID for demo if none is provided, or get the first product's variant ID
+  const defaultId = products[0]?.variants[0]?.id || "v1_black";
+  const productId = id || defaultId;
+
+  const { product, selectedVariant } = getProductAndVariant(productId);
+
+  useEffect(() => {
+    if (selectedVariant) {
+      setActiveVariantId(selectedVariant.id);
     }
-    const variant = p.variants.find((v) => v.id === id);
-    if (variant) {
-      product = p;
-      selectedVariant = variant;
-      break;
-    }
-  }
+  }, [selectedVariant]);
 
   if (!product || !selectedVariant)
     return (
@@ -131,11 +236,24 @@ export default function ProductDisplay() {
       </div>
     );
 
+  const activeVariantIndex = product.variants.findIndex(
+    (v) => v.id === activeVariantId
+  );
   const productImages = product.variants.map((v) => ({
     id: v.id,
     url: v.image,
-    angle: v.color,
+    color: v.color,
   }));
+
+  const handleVariantClick = (variantId) => {
+    setActiveVariantId(variantId);
+  };
+
+  const accordionItems = [
+    { title: "Details", content: product.details },
+    { title: "Shipping Policy", content: product.shippingPolicy },
+    { title: "Size Chart", content: product.sizeChart },
+  ];
 
   return (
     <section className="min-h-screen bg-white flex flex-col items-center justify-start relative">
@@ -149,27 +267,27 @@ export default function ProductDisplay() {
       >
         <HeroCarousel
           variants={product.variants}
-          activeIndex={activeVariantIndex}
-          setActiveIndex={setActiveVariantIndex}
+          activeIndex={activeVariantIndex !== -1 ? activeVariantIndex : 0}
+          setActiveIndex={() => {}}
         />
       </div>
 
-      {/* Content below hero */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-[700px] z-20 relative py-12 sm:py-16">
+     
+      {/* Product Content */}
+      <div className="w-[90%] px-4 mt-[700px] z-20 relative py-12">
         <div className="flex flex-col md:flex-row items-start gap-8">
-          {/* LEFT: Product Name + Description + Images */}
+          {/* LEFT: Product Info */}
           <div className="w-full md:w-1/2 flex flex-col items-start space-y-6">
             <div className="text-left">
-              <p className=" text-2xl mb-2 leading-relaxed mt-2 font-extrabold main text-red-500 uppercase ">
-                Feed Your Soul
+              <p className="text-2xl mb-2 leading-relaxed mt-2 font-extrabold text-red-500 uppercase">
+                {product.brand}
               </p>
-
-              <h2 className="text-3xl sm:text-7xl title  font-extrabold  tracking-wider text-gray-800">
+              <h2 className="text-3xl sm:text-7xl font-extrabold tracking-wider text-gray-800">
                 {product.name}
               </h2>
             </div>
 
-            {/* Product Images */}
+            {/* Images */}
             <AnimatePresence>
               {productImages.map((image, index) => (
                 <motion.div
@@ -179,77 +297,123 @@ export default function ProductDisplay() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  onClick={() =>
-                    navigate(`/pdpc/${product.id}?variantId=${image.id}`)
-                  }
+                  onClick={() => handleVariantClick(image.id)}
                 >
                   <img
                     src={image.url}
-                    alt={`${product.name} ${image.angle}`}
-                    className="w-full h-auto object-contain "
+                    alt={`${product.name} ${image.color}`}
+                    className="w-full h-auto object-contain"
                   />
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
 
-          {/* RIGHT: Price, Size Dropdown, Add to Cart + Accordion */}
-          <div className="w-full md:w-1/2 sticky top-20 self-start p-4 sm:p-6 flex flex-col gap-4">
-            {/* Price */}
-            <p className="text-7xl main font-bold text-gray-900 text-right ">
-              ₹{selectedVariant.priceINR}
-            </p>
+          {/* RIGHT: Price, Description, etc. */}
+          <div className="w-full md:w-1/2 sticky top-20 self-start p-4 sm:p-6 flex flex-col gap-2">
+            {/* Price + Colors */}
+            <div className="flex justify-end gap-2">
+              <p className="text-4xl font-extrabold text-gray-900 ml-auto">
+                {product.discountPriceINR || product.priceINR}
+              </p>
 
-            {/* Size Selector on Right Side */}
-            <div className="flex justify-end mt-2">
-              <div className="w-40">
-                <label className="block text-xl text-black mb-1 font-medium text-right">
-                  Select Size
-                </label>
-                <select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+            </div>
+            <div className="flex py-2 items-center justify-end space-x-2">
+              {product.variants.slice(0, 3).map((variant) => {
+                const isSelected = activeVariantId === variant.id;
+                return (
+                  <motion.button
+                    key={variant.id}
+                    className={`w-6 h-6 rounded-full border-2 ${
+                      isSelected
+                        ? "border-gray-900 scale-110"
+                        : "border-gray-300"
+                    }`}
+                    style={{ backgroundColor: variant.color }}
+                    onClick={() => handleVariantClick(variant.id)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    title={variant.color}
+                  />
+                );
+              })}
+            </div>
+            <div className="flex flex-col gap-4 ">
+              <div className="flex justify-end">
+                <div className="w-40">
+                  <label className="block text-sm text-black mb-1 font-medium text-right">
+                    Select Size
+                  </label>
+                  <select
+                    value={selectedSize}
+                    onChange={(e) => setSelectedSize(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                  >
+                    <option value="">Select size</option>
+                    {product.sizeOptions.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <motion.button
+                  className={`px-6 py-2 rounded-full text-lg uppercase tracking-wider transition-colors ${
+                    selectedSize
+                      ? "bg-gray-800 text-white hover:bg-gray-700"
+                      : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  }`}
+whileHover={{ scale: selectedSize ? 1.05 : 1 }}
+                  whileTap={{ scale: selectedSize ? 0.95 : 1 }}
+                  disabled={!selectedSize}
+                  onClick={() => {
+                    if (selectedSize)
+                      navigate(
+                        `/checkout?productId=${product.id}&variantId=${selectedVariant.id}&size=${selectedSize}`
+                      );
+                  }}
                 >
-                  <option value="">Select size</option>
-                  {product.sizeOptions.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
+                  Add to Cart
+                </motion.button>
+
+                <motion.button
+                  className="h-10 w-10 flex justify-center items-center rounded-full border border-gray-300 text-gray-700 hover:bg-red-500 hover:text-white"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Heart className="h-5 w-5" />
+                </motion.button>
               </div>
             </div>
+            <div className="text-left mt-6 pb-2">
 
-            {/* Add to Cart + Wishlist */}
-            <div className="flex justify-end gap-2 mt-2">
-              <motion.button
-                className={`px-6 py-2 rounded-full text-xl uppercase tracking-wider transition-colors ${
-                  selectedSize
-                    ? "bg-gray-800 text-white hover:bg-gray-700"
-                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                }`}
-                whileHover={{ scale: selectedSize ? 1.05 : 1 }}
-                whileTap={{ scale: selectedSize ? 0.95 : 1 }}
-                disabled={!selectedSize}
-                onClick={() => {
-                  if (selectedSize)
-                    navigate(
-                      `/checkout?productId=${product.id}&variantId=${selectedVariant.id}&size=${selectedSize}`
-                    );
-                }}
-              >
-                Add to Cart
-              </motion.button>
-
-              <motion.button
-                className="h-12 w-12 flex justify-center items-center rounded-full border border-gray-300 text-gray-700 hover:bg-red-500 hover:text-white"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Heart className="h-4 w-4" />
-              </motion.button>
+              <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-line">
+                {product.description}
+              </p>
             </div>
+
+            {/* Accordions */}
+            <div className="mt-4">
+              {accordionItems.map((item) => (
+                <Accordion
+                  key={item.title}
+                  title={item.title}
+                  content={item.content}
+                  isOpen={activeAccordion === item.title}
+                  onClick={() =>
+                    setActiveAccordion(
+                      activeAccordion === item.title ? null : item.title
+                    )
+                  }
+                />
+              ))}
+            </div>
+
+            {/* Size Selector + Buttons */}
+
           </div>
         </div>
       </div>

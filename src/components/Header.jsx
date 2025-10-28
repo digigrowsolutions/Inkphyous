@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CircleUserRound, X, Search, ChevronDown } from "lucide-react";
+import { CircleUserRound, X, Search, ChevronDown, ArrowLeft } from "lucide-react";
 import { HeartIcon, Bars3Icon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { TbPaperBag } from "react-icons/tb";
 
@@ -23,7 +23,7 @@ function SpinningModel({ url }) {
 
   return (
     <Center>
-      <group ref={group} scale={25} position={[0, 0, 0]}>
+      <group ref={group} scale={30} position={[0, 0, 0]}>
         <primitive object={scene} />
       </group>
     </Center>
@@ -43,6 +43,9 @@ export default function Header({ openShopAll }) {
   const cartDropdownRef = useRef(null);
   const searchInputRef = useRef(null);
   const langDropdownRef = useRef(null);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -91,12 +94,14 @@ export default function Header({ openShopAll }) {
   }, []);
 
   const cartItemCount = cartItems.length;
-
   const searchVariants = {
     hidden: { width: 0, opacity: 0 },
     visible: { width: "180px", opacity: 1, transition: { duration: 0.3 } },
     exit: { width: 0, opacity: 0, transition: { duration: 0.2 } },
   };
+
+  // ✅ Check if current URL includes "/product"
+  const isProductPage = location.pathname.includes("/product");
 
   return (
     <>
@@ -131,13 +136,33 @@ export default function Header({ openShopAll }) {
             </motion.button>
           </div>
 
+         {/* ✅ Back Button when on Product Page */}
+{isProductPage && (
+  <motion.div
+    onClick={() => navigate("/")}
+    className="absolute left-28 top-1/2 -translate-y-1/2 flex items-center gap-3 cursor-pointer z-50"
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    {/* Circle with arrow */}
+    <div className="p-2 bg-white hover:bg-gray-50 rounded-full shadow-sm border border-gray-200">
+      <ArrowLeft className="h-5 w-5 text-gray-700" />
+    </div>
+    
+    {/* Text outside the circle */}
+    <span className="text-sm font-medium text-gray-700">Back</span>
+  </motion.div>
+)}
           {/* Center: 3D Model */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[120px] pointer-events-none">
+          <div
+            onClick={() => (window.location.href = "/home")}
+            className="absolute mt-4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[120px] cursor-pointer"
+          >
             <Canvas camera={{ position: [0, 2, 10], fov: 50 }}>
               <ambientLight intensity={0.8} />
               <directionalLight position={[5, 5, 5]} intensity={1} />
               <SpinningModel url="/pendant.glb" />
-              <OrbitControls enableZoom={false} enablePan={false} />
+              <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
               <Environment preset="sunset" />
             </Canvas>
           </div>

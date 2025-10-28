@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import ProductDisplay from "./pages/PDP";
 import Checkout from "./pages/Checkout";
 import PDPC from "./pages/PDPC";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Legal from "./pages/Legal";
 import ContactUs from "./pages/ContactUs";
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "./components/Footer";
@@ -17,13 +17,13 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Welcome />} />
-                <Route path="/home" element={<Home />} />
+        {/* <Route path="/" element={<Welcome />} /> */}
+                <Route path="/" element={<Home />} />
 
         <Route path="/product/:id" element={<ProductDisplay />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/pdpc/:id" element={<PDPC />} />
-        <Route path="/privacypolicy&termsconditions" element={<PrivacyPolicy />} />
+        <Route path="/legal" element={<Legal />} />
         <Route path="/contact" element={<ContactUs />} />
       </Routes>
 <Footer/>

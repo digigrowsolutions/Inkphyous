@@ -6,10 +6,28 @@ import Product4v2 from '../assets/JH2.png';
 import Product5v1 from '../assets/RT1.png';
 import Product5v2 from '../assets/RT2.png';
 
+// 🛑 Hardcoded Size Chart Structure (Based on Image 1)
+const universalSizeChart = {
+  title: 'Jersey "Reptile"',
+  header: ['Size', 'S', 'M', 'L', 'XL'],
+  measurements: {
+    'Chest': ['19.5"', '20.5"', '21.5"', '22.5"'], // Assuming example measurements to make the table look full. Use actual data if available.
+    'Sholder': ['18"', '19"', '20"', '21"'],
+    'Length': ['28"', '29"', '30"', '31"'],
+  },
+};
+
+// 🛑 Hardcoded Shipping Policy Structure (Based on Image 2)
+const universalShippingPolicy = [
+  "Standard processing time for orders is up to 24 hours, with delivery typically completed within 3–5 business days after dispatch.",
+  "Read our full Shipping Policy for more details",
+];
+
+
 const products = [
   {
     id: 1,
-    name: "Jersey Reptile",
+    name: "Jersey Reptile", // Jersey “Reptile”
     brand: "Inkphyous",
     image: Product1v1,
     category: "Jerseys",
@@ -19,7 +37,8 @@ const products = [
     inStock: true,
     quantity: 45,
     sku: "JSY-2025-RPT",
-    description: "Dry-fit jersey with screen prints and embroidery.",
+    // Description from source 2, 3, 4
+    description: "Crafted from 100% dry-fit polyester jersey, the Jersey “Reptile” offers a smooth, structured hand feel. Designed in an oversized unisex silhouette with a ribbed neckline, it features 'Reptile' graphics on the front and back, logo embroidery on sleeves, 'Concept' embroidery at the front, 'Feed Your Soul' embroidery at the back , 00 embroidered patches on both sleeves, 'Inkphyous' screenprint at the back, and signature Inkphyous rubberized labels & side tag.",
     details: {
       fabric: "100% Polyester - Dry Fit",
       washCare: "Machine wash cold, air dry",
@@ -59,10 +78,13 @@ const products = [
     rating: 4.5,
     reviews: 88,
     createdAt: "2025-06-01",
+    // ✅ ADDED HARDCODED POLICIES
+    shippingPolicy: universalShippingPolicy,
+    sizeChart: universalSizeChart,
   },
   {
     id: 2,
-    name: "Jersey Elements",
+    name: "Jersey Elements", // Jersey “Elements”
     brand: "Inkphyous",
     image: Product2v1,
     category: "Jerseys",
@@ -72,7 +94,8 @@ const products = [
     inStock: true,
     quantity: 40,
     sku: "JSY-2025-ELE-PRT",
-    description: "Oversized jersey with full-body screenprinted designs.",
+    // Description from source 6, 7, 8
+    description: "Crafted from 100% dry-fit polyester jersey, the Jersey “Elements” offers a smooth, refined hand feel. Designed in an oversized unisex silhouette with a ribbed neckline, it features 'Elements' graphics and 'Inkphyous' screenprint on the front and back, lining screenprint on both sleeves, logo embroidery at the back, and 'Concept' embroidery at the front. 00 embroidered patches on both shoulders, Inkphyous rubberized labels, and a side tag complete the elevated, statement-making design.",
     details: {
       fabric: "100% Polyester - Dry Fit",
       washCare: "Machine wash cold, air dry",
@@ -112,10 +135,13 @@ const products = [
     rating: 4.4,
     reviews: 76,
     createdAt: "2025-06-02",
+    // ✅ ADDED HARDCODED POLICIES
+    shippingPolicy: universalShippingPolicy,
+    sizeChart: universalSizeChart,
   },
   {
     id: 3,
-    name: "Jersey Box Fitted",
+    name: "Jersey Box Fitted", // Jersey “Boxy Fit Athletic Mesh”
     brand: "Inkphyous",
     image: Product3v1,
     category: "Jerseys",
@@ -125,7 +151,8 @@ const products = [
     inStock: true,
     quantity: 35,
     sku: "JSY-2025-BOX",
-    description: "Boxy-fit mesh jersey with sublimation prints.",
+    // Description from source 10, 11
+    description: "The Jersey “Boxy Fit Athletic Mesh” is crafted from 100% polyester mesh, offering a lightweight, breathable hand feel with a structured drape. Designed in a boxy oversized unisex silhouette with a ribbed neckline, it features 00 and 'Inkphyous' sublimation prints on the back, and is completed with Inkphyous rubberized labels & side tag for elevated detailing.",
     details: {
       fabric: "100% Polyester - Mesh",
       washCare: "Machine wash cold, air dry",
@@ -157,10 +184,13 @@ const products = [
     rating: 4.6,
     reviews: 70,
     createdAt: "2025-06-03",
+    // ✅ ADDED HARDCODED POLICIES
+    shippingPolicy: universalShippingPolicy,
+    sizeChart: universalSizeChart,
   },
   {
     id: 4,
-    name: " Polyester Jhorts",
+    name: " Polyester Jhorts", // Jorts “Relax Fit”
     brand: "Inkphyous",
     image: Product4v1,
     category: "Jhorts",
@@ -170,7 +200,8 @@ const products = [
     inStock: true,
     quantity: 50,
     sku: "JRT-2025-DIA",
-    description: "Below-knee shorts with a bold screenprint design.",
+    // Description from source 13, 14
+    description: "The Jorts “Relax Fit” are crafted from 100% polyester with a smooth, structured hand feel. Designed in an oversized unisex silhouette with a woven elastic waist belt and long drawstring, they feature 'Inkphyous' & 'Border' screenprints at the front, hit below the knee, and are finished with Inkphyous rubberized labels & side tag for elevated detailing.",
     details: {
       fabric: "100% Polyester - Diagonal Weave",
       washCare: "Machine wash cold, tumble dry low",
@@ -202,10 +233,13 @@ const products = [
     rating: 4.3,
     reviews: 65,
     createdAt: "2025-06-04",
+    // ✅ ADDED HARDCODED POLICIES
+    shippingPolicy: universalShippingPolicy,
+    sizeChart: universalSizeChart,
   },
   {
     id: 5,
-    name: "Relax Trackpants",
+    name: "Relax Trackpants", // Trackpants “Relax Fit”
     brand: "Inkphyous",
     image: Product5v1,
     category: "Pants",
@@ -215,7 +249,8 @@ const products = [
     inStock: true,
     quantity: 60,
     sku: "TRK-2025-RLX",
-    description: "Silky trackpants with screenprint and elastic waist.",
+    // Description from source 16, 17
+    description: "The Trackpants “Relax Fit” are crafted from 100% net and silky-soft polyester, offering a lightweight, smooth hand feel. Designed in an oversized unisex silhouette with a woven elastic waist belt and long drawstring, they feature 'Inkphyous' & 'Border' screenprints at the front, a full-length cut, and are completed with Inkphyous rubberized labels & side tag for elevated detailing.",
     details: {
       fabric: "100% Polyester - Net/Silky Soft",
       washCare: "Machine wash cold, air dry",
@@ -247,6 +282,9 @@ const products = [
     rating: 4.5,
     reviews: 110,
     createdAt: "2025-06-05",
+    // ✅ ADDED HARDCODED POLICIES
+    shippingPolicy: universalShippingPolicy,
+    sizeChart: universalSizeChart,
   },
 ];
 

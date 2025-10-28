@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import LocomotiveScroll from "locomotive-scroll";
@@ -9,7 +8,7 @@ import products from "../Utils/Products";
 import { Rewind } from "lucide-react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../components/CartContext";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, LayoutGrid, Sparkles } from "lucide-react";
 
 // ================== CART NOTIFICATION ==================
 function CartNotification({ product, onClose }) {
@@ -20,7 +19,7 @@ function CartNotification({ product, onClose }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-20 right-4 p-4 bg-gray-800 text-gray-100 rounded-lg  flex items-center space-x-4 z-[200]"
+      className="fixed top-20 right-4 p-4 bg-gray-800 text-gray-100 rounded-lg flex items-center space-x-4 z-[200]"
     >
       <img
         src={product.image}
@@ -41,11 +40,9 @@ function CartNotification({ product, onClose }) {
 // ================== GOOEY BUTTON EFFECT ==================
 function GooeyButton({ text, onClick }) {
   const buttonRef = useRef(null);
-
   const createParticles = () => {
     const button = buttonRef.current;
     if (!button) return;
-
     const particleCount = 12;
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement("span");
@@ -54,16 +51,13 @@ function GooeyButton({ text, onClick }) {
       particle.style.setProperty("--y", `${(Math.random() - 0.5) * 200}px`);
       particle.style.setProperty("--delay", `${Math.random() * 0.2}s`);
       button.appendChild(particle);
-
       setTimeout(() => particle.remove(), 800);
     }
   };
-
   const handleClick = (e) => {
     createParticles();
     onClick(e);
   };
-
   return (
     <>
       <style>
@@ -72,7 +66,7 @@ function GooeyButton({ text, onClick }) {
             position: relative;
             overflow: hidden;
             color: white;
-            background: #1f2937; /* gray-800 */
+            background: #1f2937;
             border: none;
             border-radius: 9999px;
             cursor: pointer;
@@ -95,18 +89,9 @@ function GooeyButton({ text, onClick }) {
             animation-delay: var(--delay);
           }
           @keyframes gooey-explode {
-            0% {
-              opacity: 1;
-              transform: translate(-50%, -50%) scale(0);
-            }
-            50% {
-              transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2);
-              opacity: 1;
-            }
-            100% {
-              transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
-              opacity: 0;
-            }
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0); opacity: 0; }
           }
         `}
       </style>
@@ -125,7 +110,6 @@ function GooeyButton({ text, onClick }) {
 function ProductInfo({ activeProduct }) {
   const navigate = useNavigate();
   if (!activeProduct) return null;
-
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -161,6 +145,57 @@ function ProductInfo({ activeProduct }) {
   );
 }
 
+// ================== TAB SWITCHER ==================
+function TabSwitcher({ activeTab, setActiveTab, onShopClick, onCarouselClick }) {
+  return (
+    <motion.div
+      className="fixed top-24 right-8 z-50 bg-white/90 backdrop-blur-lg border border-gray-200 rounded-full p-1 flex gap-1"
+      initial={{ opacity: 0, x: 50, scale: 0.9 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {/* SHOP TAB */}
+      <motion.button
+        onClick={onShopClick}
+        className={`relative px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+          activeTab === 'shop' ? 'text-white' : 'text-gray-700 hover:text-gray-900'
+        }`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {activeTab === 'shop' && (
+          <motion.div
+            layoutId="activeTab"
+            className="absolute inset-0 bg-gradient-to-r from-red-500 to-rose-600 rounded-full shadow-lg"
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          />
+        )}
+        <LayoutGrid className="h-4 w-4 relative z-10" />
+       
+      </motion.button>
+
+      {/* CAROUSEL TAB */}
+      <motion.button
+        onClick={onCarouselClick}
+        className={`relative px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+          activeTab === 'carousel' ? 'text-white' : 'text-gray-700 hover:text-gray-900'
+        }`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {activeTab === 'carousel' && (
+          <motion.div
+            layoutId="activeTab"
+            className="absolute inset-0 bg-gradient-to-r from-red-500 to-rose-600 rounded-full shadow-lg"
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          />
+        )}
+        <Sparkles className="h-4 w-4 relative z-10" />
+      </motion.button>
+    </motion.div>
+  );
+}
+
 // ================== PRODUCT LISTING ==================
 function ProductListing({ products, navigate, onBackClick }) {
   return (
@@ -171,31 +206,26 @@ function ProductListing({ products, navigate, onBackClick }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <button
-        onClick={onBackClick}
-        className="mb-8 text-gray-800 border border-gray-400 px-6 py-3 rounded-md text-xs sm:text-sm uppercase tracking-wider hover:bg-gray-200 transition-all duration-300 flex items-center"
-      >
-        <Rewind className="mr-2 h-4 w-4" />
-        BACK
-      </button>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+     
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((product) => (
           <motion.div
             key={product.id}
             className="cursor-pointer rounded-lg overflow-hidden transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate(`/product/${product.id}`)}
           >
-            <div className="w-full h-auto bg-gray-100">
+            <div className="w-full h-64 bg-gray-100">
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-auto object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
-            <div className="mt-2 flex justify-between items-start">
-              <h3 className="text-xl font-semibold text-gray-900">{product.name}</h3>
-              <p className="text-xl font-semibold text-gray-800">
+            <div className="mt-3 flex justify-between items-start">
+              <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+              <p className="text-lg font-semibold text-gray-800">
                 ₹{product.discountPriceINR}
               </p>
             </div>
@@ -223,11 +253,13 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
     const isCurrent = index === activeIndex;
     const isNext = index === (activeIndex + 1) % products.length;
     const isPrev = index === (activeIndex - 1 + products.length) % products.length;
+
     let base = {
       position: "absolute",
       transition: "all 1s cubic-bezier(0.25, 0.1, 0.25, 1)",
       transformOrigin: "center center",
     };
+
     if (isCurrent)
       return { ...base, zIndex: 10, transform: "translateX(-50%) scale(1.4)", left: "50%", opacity: 1 };
     if (isNext)
@@ -252,25 +284,23 @@ function MainCarousel({ products, activeIndex, setActiveIndex, onProductChange }
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-contain rounded-xl "
+            className="w-full h-full object-contain "
           />
         </motion.div>
       ))}
 
-      {/* Left Arrow */}
+      {/* Navigation Arrows */}
       <button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-800/20 backdrop-blur-md flex items-center justify-center hover:bg-gray-800/40 transition"
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full backdrop-blur-md bg-white/30 flex items-center justify-center hover:bg-red-500 transition group"
       >
-        <ArrowLeft className="h-6 w-6 text-gray-900" />
+        <ArrowLeft className="h-6 w-6 text-gray-900 group-hover:text-white transition-colors" />
       </button>
-
-      {/* Right Arrow */}
       <button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-800/20 backdrop-blur-md flex items-center justify-center hover:bg-gray-800/40 transition"
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full backdrop-blur-md bg-white/30 flex items-center justify-center hover:bg-red-500 transition group"
       >
-        <ArrowRight className="h-6 w-6 text-gray-900" />
+        <ArrowRight className="h-6 w-6 text-gray-900 group-hover:text-white transition-colors" />
       </button>
     </div>
   );
@@ -302,8 +332,9 @@ function CategoryPanel({ navItems, selectedIndex, setSelectedIndex }) {
   );
 }
 
-// ================== MAIN HOME ==================
+// ================== MAIN HOME COMPONENT ==================
 export default function Home() {
+  const [activeTab, setActiveTab] = useState('carousel');
   const [activeProduct, setActiveProduct] = useState(null);
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
   const [activeProductIndex, setActiveProductIndex] = useState(0);
@@ -313,6 +344,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  // Build category map
   const categoryMap = products.reduce((acc, p) => {
     acc[p.category] = (acc[p.category] || 0) + 1;
     return acc;
@@ -331,27 +363,42 @@ export default function Home() {
   }));
 
   const navItems = [...categoryOnlyItems, { label: "Shop All", category: "all" }];
-  const selectedCategory = navItems[selectedCategoryIndex].category;
 
-  const filteredProducts =
-    selectedCategory === "all"
-      ? products
-      : products.filter((p) => p.category === selectedCategory);
+  // Determine current view based on tab
+  const isShopAllView = activeTab === 'shop';
+  const selectedCategory = isShopAllView ? "all" : navItems[selectedCategoryIndex]?.category || "all";
+  const filteredProducts = selectedCategory === "all"
+    ? products
+    : products.filter((p) => p.category === selectedCategory);
 
+  // Locomotive Scroll setup
   useEffect(() => {
-    if (selectedCategory !== "all") {
+    if (!isShopAllView && containerRef.current && !locoScrollRef.current) {
       locoScrollRef.current = new LocomotiveScroll({
         el: containerRef.current,
         smooth: true,
         smartphone: { smooth: true },
         tablet: { smooth: true },
       });
-    } else {
-      locoScrollRef.current?.destroy();
+    } else if (isShopAllView && locoScrollRef.current) {
+      locoScrollRef.current.destroy();
       locoScrollRef.current = null;
     }
+
     return () => locoScrollRef.current?.destroy();
-  }, [selectedCategory]);
+  }, [isShopAllView]);
+
+  // Tab Handlers
+  const handleShopClick = () => {
+    setActiveTab('shop');
+    setSelectedCategoryIndex(navItems.findIndex(item => item.category === "all"));
+  };
+
+  const handleCarouselClick = () => {
+    setActiveTab('carousel');
+    setSelectedCategoryIndex(0); // Reset to first category
+    setActiveProductIndex(0);
+  };
 
   const handleProductChange = (product, index) => {
     setActiveProduct(product);
@@ -365,21 +412,29 @@ export default function Home() {
   };
 
   return (
-    <section className="relative h-fit flex justify-center items-start overflow-hidden text-gray-900 pt-24 bg-gray-50">
-      {/* LEFT CATEGORY PANEL */}
-      <div className="hidden md:flex flex-col ml-8 mr-4">
+    <section className="relative min-h-screen flex justify-center items-start overflow-hidden text-gray-900 pt-24">
+      {/* LEFT CATEGORY PANEL (Uncomment if needed) */}
+      {/* <div className="hidden md:flex flex-col ml-8 mr-4">
         <CategoryPanel
           navItems={navItems}
           selectedIndex={selectedCategoryIndex}
           setSelectedIndex={setSelectedCategoryIndex}
         />
-      </div>
+      </div> */}
+
+      {/* TAB SWITCHER */}
+      <TabSwitcher
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onShopClick={handleShopClick}
+        onCarouselClick={handleCarouselClick}
+      />
 
       {/* MAIN CONTENT */}
       <div className="flex-1 flex justify-center w-full">
         <motion.div
-          className={`w-full max-w-6xl ${
-            selectedCategory === "all" ? "overflow-y-auto h-full hide-scrollbar" : ""
+          className={`w-full max-w-7xl ${
+            isShopAllView ? "overflow-y-auto h-screen hide-scrollbar" : ""
           }`}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -388,30 +443,29 @@ export default function Home() {
           data-scroll-container
         >
           <AnimatePresence mode="wait">
-            {selectedCategory === "all" ? (
+            {isShopAllView ? (
               <ProductListing
-                key="listing"
+                key="shop-all"
                 products={products}
                 navigate={navigate}
-                onBackClick={() => setSelectedCategoryIndex(0)}
+                onBackClick={handleCarouselClick}
               />
             ) : (
-              <>
+              <motion.div key="carousel-view" className="space-y-8">
                 <MainCarousel
-                  key="carousel"
                   products={filteredProducts}
                   activeIndex={activeProductIndex}
                   setActiveIndex={setActiveProductIndex}
                   onProductChange={handleProductChange}
                 />
                 <ProductInfo activeProduct={activeProduct} />
-              </>
+              </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
       </div>
 
-      {/* 🛒 CART NOTIFICATION */}
+      {/* CART NOTIFICATION */}
       <AnimatePresence>
         {notification && (
           <CartNotification

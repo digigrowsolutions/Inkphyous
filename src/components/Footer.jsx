@@ -16,11 +16,11 @@ const Footer = () => {
           <option>India (INR ₹)</option>
           <option>EAE (EUR €)</option>
         </select>
-          <a href="#" className="hover:opacity-60 transition-opacity hover:underline">
+          <a href="contact" className="hover:opacity-60 transition-opacity hover:underline">
             Contact
           </a>
          
-          <a href="/privacypolicy&termsconditions" className="hover:opacity-60 transition-opacity hover:underline">
+          <a href="/legal" className="hover:opacity-60 transition-opacity hover:underline">
           Legalities
           </a>
           <a href="#" className="hover:opacity-60 transition-opacity hover:underline">
