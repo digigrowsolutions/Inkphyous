@@ -310,7 +310,7 @@ export default function ProductDisplay() {
           </div>
 
           {/* RIGHT: Price, Description, etc. */}
-          <div className="w-full md:w-1/2 sticky top-20 self-start p-4 sm:p-6 flex flex-col gap-2">
+          <div className="w-full md:w-1/2 sticky top-20 self-start  flex flex-col gap-2">
             {/* Price + Colors */}
             <div className="flex justify-end gap-2">
             <p className="text-4xl font-extrabold text-gray-900 ml-auto">
