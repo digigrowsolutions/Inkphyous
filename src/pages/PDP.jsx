@@ -99,33 +99,33 @@ function HeroCarousel({ variants, activeIndex, setActiveIndex }) {
   );
 }
 
-// Accordion Component (MODIFIED)
 function Accordion({ title, content, isOpen, onClick }) {
   const renderContent = () => {
     if (title === "Size Chart" && typeof content === 'object' && content !== null) {
-      // Logic for rendering the Size Chart table, matching the image
       const { title: chartTitle, header, measurements } = content;
       const rows = Object.entries(measurements);
 
       return (
         <div className="pt-2 space-y-2">
           <p className="font-medium text-gray-800">{chartTitle}</p>
-          <p className="text-sm">To assist you in selecting the most accurate fit, please refer to the product measurement details provided for each item.</p>
+          <p className="text-sm">
+            To assist you in selecting the most accurate fit, please refer to the product measurement details provided for each item.
+          </p>
           <p className="text-sm font-semibold">Product Measurement (Inches)</p>
-          <table className="w-full border-collapse border border-gray-300 text-sm">
+          <table className="w-full border-collapse border border-red-500 text-sm">
             <thead>
               <tr className="bg-gray-100">
                 {header.map((head, index) => (
-                  <th key={index} className="border border-gray-300 p-2 text-left">{head}</th>
+                  <th key={index} className="border border-red-500 p-2 text-left">{head}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {rows.map(([key, values]) => (
                 <tr key={key}>
-                  <td className="border border-gray-300 p-2 font-medium">{key}</td>
+                  <td className="border border-red-500 p-2 font-medium">{key}</td>
                   {values.map((val, index) => (
-                    <td key={index} className="border border-gray-300 p-2">{val}</td>
+                    <td key={index} className="border border-red-500 p-2">{val}</td>
                   ))}
                 </tr>
               ))}
@@ -134,17 +134,21 @@ function Accordion({ title, content, isOpen, onClick }) {
         </div>
       );
     } else if (title === "Shipping Policy" && Array.isArray(content)) {
-      // Logic for rendering Shipping Policy, matching the image (bullet points)
       return (
         <div className="pt-2">
           <ul className="list-disc pl-5 space-y-2 text-sm text-gray-800">
             {content.map((item, index) => (
               <li key={index} className="marker:text-black">
-                {item.includes('Shipping Policy') ? (
-                    // This handles the "Read our full Shipping Policy" line
-                    <p className="inline">Read our full <span className="text-red-600 font-semibold cursor-pointer hover:underline">Shipping Policy</span> for more details</p>
+                {item.includes("Shipping Policy") ? (
+                  <p className="inline">
+                    Read our full{" "}
+                    <span className="text-red-600 font-semibold cursor-pointer hover:underline">
+                      Shipping Policy
+                    </span>{" "}
+                    for more details
+                  </p>
                 ) : (
-                    item
+                  item
                 )}
               </li>
             ))}
@@ -152,12 +156,11 @@ function Accordion({ title, content, isOpen, onClick }) {
         </div>
       );
     } else {
-      // Default rendering for Details (simple list/array)
       const contentArray = Array.isArray(content)
         ? content
         : typeof content === "object" && content !== null
-        ? Object.entries(content).map(([key, value]) => `${key}: ${value}`)
-        : [content];
+          ? Object.entries(content).map(([key, value]) => `${key}: ${value}`)
+          : [content];
 
       return (
         <div className="pt-2">
@@ -172,19 +175,21 @@ function Accordion({ title, content, isOpen, onClick }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full border-t border-red-500">
       <button
-        className="flex justify-between items-center w-full py-4 text-left text-lg text-gray-800 focus:outline-none"
+        className="flex flex-row-reverse justify-between items-center w-full py-4 text-right text-lg text-gray-800 focus:outline-none"
         onClick={onClick}
       >
-        <span className="flex-1 uppercase font-semibold">{title}</span>
+        {/* Title on the right */}
+        <span className="flex-1 uppercase font-semibold text-right">{title}</span>
+        {/* Icon on the left */}
         <Plus
-          className={`h-6 w-6 transition-transform ${
-            isOpen ? "rotate-45" : "rotate-0"
-          }`}
+          className={`h-6 w-6 mr-2 transition-transform ${isOpen ? "rotate-45" : "rotate-0"
+            }`}
           style={{ strokeWidth: 3 }}
         />
       </button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -192,7 +197,7 @@ function Accordion({ title, content, isOpen, onClick }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden pb-4 text-gray-600 border-t border-gray-200"
+            className="overflow-hidden pb-4 text-gray-600 border-t border-red-500 text-right"
           >
             {renderContent()}
           </motion.div>
@@ -201,6 +206,8 @@ function Accordion({ title, content, isOpen, onClick }) {
     </div>
   );
 }
+
+
 
 // Main Product Display
 export default function ProductDisplay() {
@@ -268,11 +275,11 @@ export default function ProductDisplay() {
         <HeroCarousel
           variants={product.variants}
           activeIndex={activeVariantIndex !== -1 ? activeVariantIndex : 0}
-          setActiveIndex={() => {}}
+          setActiveIndex={() => { }}
         />
       </div>
 
-     
+
       {/* Product Content */}
       <div className="w-[90%] px-4 mt-[700px] z-20 relative py-12">
         <div className="flex flex-col md:flex-row items-start gap-8">
@@ -313,43 +320,45 @@ export default function ProductDisplay() {
           <div className="w-full md:w-1/2 sticky top-20 self-start  flex flex-col gap-2">
             {/* Price + Colors */}
             <div className="flex justify-end gap-2">
-            <p className="text-4xl font-extrabold text-gray-900 ml-auto">
-  ₹{product.discountPriceINR || product.priceINR}
-</p>
+              <p className="text-4xl font-extrabold text-gray-900 ml-auto">
+                ₹{product.discountPriceINR || product.priceINR}
+              </p>
 
             </div>
-            <div className="flex py-2 items-center justify-end space-x-2">
-              {product.variants.slice(0, 3).map((variant) => {
-                const isSelected = activeVariantId === variant.id;
-                return (
-                  <motion.button
-                    key={variant.id}
-                    className={`w-6 h-6 rounded-full border-2 ${
-                      isSelected
-                        ? "border-gray-900 scale-110"
-                        : "border-gray-300"
-                    }`}
-                    style={{ backgroundColor: variant.color }}
-                    onClick={() => handleVariantClick(variant.id)}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    title={variant.color}
-                  />
-                );
-              })}
-            </div>
-            <div className="flex flex-col gap-4 ">
-              <div className="flex justify-end">
-                <div className="w-40">
-                  <label className="block text-sm text-black mb-1 font-medium text-right">
-                    Select Size
-                  </label>
+            <div className="flex flex-col items-end gap-2">
+              {/* Price */}
+
+              {/* Color + Size in one row */}
+              <div className="flex items-center justify-end space-x-3">
+                {/* Color variants */}
+                <div className="flex space-x-2">
+                  {product.variants.slice(0, 3).map((variant) => {
+                    const isSelected = activeVariantId === variant.id;
+                    return (
+                      <motion.button
+                        key={variant.id}
+                        className={`w-6 h-6 rounded-full border-2 ${isSelected
+                          ? "border-gray-900 scale-110"
+                          : "border-gray-300"
+                          }`}
+                        style={{ backgroundColor: variant.color }}
+                        onClick={() => handleVariantClick(variant.id)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        title={variant.color}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Size selector */}
+                <div className="w-28">
                   <select
                     value={selectedSize}
                     onChange={(e) => setSelectedSize(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 text-sm"
                   >
-                    <option value="">Select size</option>
+                    <option value="">Size</option>
                     {product.sizeOptions.map((size) => (
                       <option key={size} value={size}>
                         {size}
@@ -359,14 +368,14 @@ export default function ProductDisplay() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2">
+              {/* Add to cart + heart */}
+              <div className="flex justify-end gap-2 mt-2">
                 <motion.button
-                  className={`px-6 py-2 rounded-full text-lg uppercase tracking-wider transition-colors ${
-                    selectedSize
-                      ? "bg-gray-800 text-white hover:bg-gray-700"
-                      : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                  }`}
-whileHover={{ scale: selectedSize ? 1.05 : 1 }}
+                  className={`px-6 py-2 rounded-full text-lg uppercase tracking-wider transition-colors ${selectedSize
+                    ? "bg-gray-800 text-white hover:bg-gray-700"
+                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                    }`}
+                  whileHover={{ scale: selectedSize ? 1.05 : 1 }}
                   whileTap={{ scale: selectedSize ? 0.95 : 1 }}
                   disabled={!selectedSize}
                   onClick={() => {
@@ -388,9 +397,10 @@ whileHover={{ scale: selectedSize ? 1.05 : 1 }}
                 </motion.button>
               </div>
             </div>
+
             <div className="text-left mt-6 pb-2">
 
-              <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-line">
+              <p className="text-sm text-right text-gray-800 leading-relaxed whitespace-pre-line">
                 {product.description}
               </p>
             </div>
