@@ -114,18 +114,18 @@ function Accordion({ title, content, isOpen, onClick }) {
           <p className="text-sm font-semibold">Product Measurement (Inches)</p>
           <table className="w-full border-collapse border border-red-500 text-sm">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="">
                 {header.map((head, index) => (
-                  <th key={index} className="border border-red-500 p-2 text-left">{head}</th>
+                  <th key={index} className="border border-gray-500 p-2 text-left">{head}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {rows.map(([key, values]) => (
                 <tr key={key}>
-                  <td className="border border-red-500 p-2 font-medium">{key}</td>
+                  <td className="border border-gray-500 p-2 font-medium">{key}</td>
                   {values.map((val, index) => (
-                    <td key={index} className="border border-red-500 p-2">{val}</td>
+                    <td key={index} className="border border-gray-500 p-2">{val}</td>
                   ))}
                 </tr>
               ))}
@@ -197,7 +197,7 @@ function Accordion({ title, content, isOpen, onClick }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden pb-4 text-gray-600 border-t border-red-500 text-right"
+            className="overflow-hidden pb-4 text-gray-600  text-right"
           >
             {renderContent()}
           </motion.div>
